@@ -3,18 +3,24 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AIController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\TnaFormController;
 use Illuminate\Support\Facades\Route;
 
 // --- Public auth ---
-Route::post('/auth/login', [AuthController::class, 'login']);
+// Throttle login to slow brute-force / credential-stuffing (per IP + email).
+Route::post('/auth/login', [AuthController::class, 'login'])
+    ->middleware('throttle:6,1');
 
 // --- Authenticated ---
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/auth/me', [AuthController::class, 'me']);
     Route::post('/auth/logout', [AuthController::class, 'logout']);
+
+    // Role-aware dashboard summary (available to all authenticated roles)
+    Route::get('/dashboard', [DashboardController::class, 'index']);
 
     // Export (owner, evaluator, or admin — controller enforces access)
     Route::get('/forms/{form}/export/pdf', [ExportController::class, 'pdf']);
@@ -32,8 +38,9 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     // AI Assist (form drafting + evaluator/lead comment drafting)
+    // Throttled to curb LLM cost abuse / resource exhaustion.
     Route::post('/ai/assist', [AIController::class, 'assist'])
-        ->middleware('role:enterprise,provincial_staff,provincial_director,regional_evaluator,tna_lead');
+        ->middleware('role:enterprise,provincial_staff,provincial_director,regional_evaluator,tna_lead', 'throttle:20,1');
 
     // Evaluation (regional evaluators + TNA lead)
     Route::middleware('role:regional_evaluator,tna_lead')->group(function () {

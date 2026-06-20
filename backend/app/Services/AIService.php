@@ -91,9 +91,31 @@ class AIService
         return trim($res['choices'][0]['message']['content'] ?? '');
     }
 
+    /**
+     * Validate an Ollama base URL against the allow-list and return it
+     * trimmed of any trailing slash. Blocks SSRF to arbitrary internal hosts.
+     */
+    public static function assertAllowedOllamaUrl(string $url): string
+    {
+        $url = rtrim(trim($url), '/');
+        $host = parse_url($url, PHP_URL_HOST);
+        $scheme = parse_url($url, PHP_URL_SCHEME);
+
+        if (! $host || ! in_array($scheme, ['http', 'https'], true)) {
+            throw new RuntimeException('Invalid Ollama base URL.');
+        }
+
+        $allowed = config('tna.ollama_allowed_hosts', ['localhost', '127.0.0.1', '::1']);
+        if (! in_array($host, $allowed, true)) {
+            throw new RuntimeException("Ollama host \"{$host}\" is not allowed.");
+        }
+
+        return $url;
+    }
+
     private function callOllama(AiConfig $config, string $prompt): string
     {
-        $base = rtrim($config->ollama_base_url ?: 'http://localhost:11434', '/');
+        $base = self::assertAllowedOllamaUrl($config->ollama_base_url ?: 'http://localhost:11434');
 
         $res = Http::timeout(120)->post("{$base}/api/generate", [
             'model' => $config->ollama_model ?: 'llama3.1',

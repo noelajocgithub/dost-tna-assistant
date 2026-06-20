@@ -11,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 use Throwable;
 
 class AdminController extends Controller
@@ -29,7 +30,7 @@ class AdminController extends Controller
         $valid = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'unique:users,email'],
-            'password' => ['required', 'string', 'min:6'],
+            'password' => ['required', 'string', Password::min(8)->letters()->numbers()],
             'role' => ['required', Rule::in(config('tna.roles'))],
             'province' => ['nullable', 'string', 'max:255'],
             'unit' => ['nullable', Rule::in(config('tna.units'))],
@@ -54,7 +55,7 @@ class AdminController extends Controller
         $valid = $request->validate([
             'name' => ['sometimes', 'string', 'max:255'],
             'email' => ['sometimes', 'email', Rule::unique('users', 'email')->ignore($user->id)],
-            'password' => ['nullable', 'string', 'min:6'],
+            'password' => ['nullable', 'string', Password::min(8)->letters()->numbers()],
             'role' => ['sometimes', Rule::in(config('tna.roles'))],
             'province' => ['nullable', 'string', 'max:255'],
             'unit' => ['nullable', Rule::in(config('tna.units'))],
@@ -181,12 +182,20 @@ class AdminController extends Controller
     /** List models installed on a local Ollama server (live query). */
     public function ollamaModels(Request $request): JsonResponse
     {
-        $base = rtrim(
-            $request->input('base_url')
-                ?: optional(AiConfig::where('provider', 'ollama')->first())->ollama_base_url
-                ?: 'http://localhost:11434',
-            '/'
-        );
+        $raw = $request->input('base_url')
+            ?: optional(AiConfig::where('provider', 'ollama')->first())->ollama_base_url
+            ?: 'http://localhost:11434';
+
+        try {
+            // SSRF guard: only allow-listed hosts may be reached.
+            $base = AIService::assertAllowedOllamaUrl($raw);
+        } catch (Throwable $e) {
+            return response()->json([
+                'ok' => false,
+                'models' => [],
+                'message' => $e->getMessage(),
+            ], 422);
+        }
 
         try {
             $res = \Illuminate\Support\Facades\Http::timeout(10)

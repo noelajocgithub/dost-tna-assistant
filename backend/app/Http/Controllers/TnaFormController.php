@@ -20,8 +20,13 @@ class TnaFormController extends Controller
         $forms = TnaForm::with('submitter:id,name,role')
             ->where(function ($q) use ($user) {
                 if ($user->role === 'provincial_director') {
-                    // All forms submitted by provincial staff under the director.
+                    // Forms submitted by provincial staff in the director's own province.
                     $q->whereHas('submitter', fn ($s) => $s->where('role', 'provincial_staff'));
+                    if (filled($user->province)) {
+                        $q->where('province', $user->province);
+                    } else {
+                        $q->whereRaw('1 = 0'); // director without a province sees nothing
+                    }
                 } elseif ($user->role === 'provincial_staff') {
                     $q->where('submitted_by', $user->id);
                     if (filled($user->province)) {
@@ -209,6 +214,8 @@ class TnaFormController extends Controller
                 && filled($user->province)
                 && $form->province === $user->province)
             || ($user->role === 'provincial_director'
+                && filled($user->province)
+                && $form->province === $user->province
                 && optional($form->submitter)->role === 'provincial_staff');
 
         abort_unless($allowed, 403, 'Forbidden.');

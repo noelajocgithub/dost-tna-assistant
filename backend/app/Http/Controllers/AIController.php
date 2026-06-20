@@ -6,6 +6,7 @@ use App\Models\ActivityLog;
 use App\Services\AIService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class AIController extends Controller
@@ -39,8 +40,15 @@ class AIController extends Controller
 
             return response()->json(['text' => $text]);
         } catch (Throwable $e) {
+            // Log the detail server-side; return a generic message to the client
+            // so internal hosts / provider errors aren't leaked.
+            Log::warning('AI assist failed', [
+                'field' => $valid['section'],
+                'error' => $e->getMessage(),
+            ]);
+
             return response()->json([
-                'message' => 'AI generation failed: ' . $e->getMessage(),
+                'message' => 'AI generation is currently unavailable. Please try again later.',
             ], 502);
         }
     }

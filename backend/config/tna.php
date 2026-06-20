@@ -44,4 +44,12 @@ return [
         'needs_clarification'    => 'Needs Clarificatory Information',
         'not_compliant'          => 'Not Compliant to DOST Guidelines',
     ],
+
+    // SSRF guard: hostnames the server is permitted to reach for a local
+    // Ollama instance. Any admin-supplied base URL must match one of these.
+    // Override via OLLAMA_ALLOWED_HOSTS (comma-separated) for remote setups.
+    'ollama_allowed_hosts' => array_values(array_filter(array_map(
+        'trim',
+        explode(',', (string) env('OLLAMA_ALLOWED_HOSTS', 'localhost,127.0.0.1,::1'))
+    ))),
 ];
