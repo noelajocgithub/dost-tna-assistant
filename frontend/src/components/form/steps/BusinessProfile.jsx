@@ -1,7 +1,6 @@
 import {
   TextField,
   TextAreaField,
-  RadioGroup,
   SelectField,
   YearSelect,
   CurrencyField,
@@ -17,6 +16,27 @@ const BUSINESS_ACTIVITIES = [
   'Agriculture/ Marine /Aquaculture',
   'Health products and pharmaceuticals',
   'Information and Communications Technology (ICT) products',
+]
+
+const ORGANIZATION_TYPES = [
+  'Sole Proprietorship',
+  'Partnership',
+  'Corporation',
+  'Cooperative',
+]
+
+// DOST MSME classification by asset size (PHP).
+const CAPITAL_CLASSES = [
+  'Micro (less than 1.5 M)',
+  'Small (1.5 – 15 M)',
+  'Medium (15 – 100 M)',
+]
+
+// DOST MSME classification by headcount.
+const EMPLOYMENT_CLASSES = [
+  'Micro (1 – 9)',
+  'Small (10 – 99)',
+  'Medium (100 – 199)',
 ]
 
 export default function BusinessProfile({ value, onChange, aiSlot }) {
@@ -45,17 +65,26 @@ export default function BusinessProfile({ value, onChange, aiSlot }) {
         />
       </FieldGrid>
 
-      <RadioGroup
-        label="Organization Type"
-        name="organization_type"
-        options={[
-          'Sole Proprietorship',
-          'Partnership',
-          'Corporation',
-          'Cooperative',
-        ]}
-        {...p}
-      />
+      <FieldGrid>
+        <SelectField
+          label="Organization Type"
+          name="organization_type"
+          options={ORGANIZATION_TYPES}
+          {...p}
+        />
+        <SelectField
+          label="Classification according to capital (PhP)"
+          name="capital_classification"
+          options={CAPITAL_CLASSES}
+          {...p}
+        />
+        <SelectField
+          label="Classification according to employment (number of employees)"
+          name="employment_classification"
+          options={EMPLOYMENT_CLASSES}
+          {...p}
+        />
+      </FieldGrid>
 
       <TextAreaField
         label="Business Background"

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AIController;
+use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EvaluationController;
@@ -35,6 +36,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/forms/{form}/submit', [TnaFormController::class, 'submit']);
         Route::post('/forms/{form}/request-deletion', [TnaFormController::class, 'requestDeletion']);
         Route::post('/forms/{form}/cancel-deletion', [TnaFormController::class, 'cancelDeletion']);
+
+        // Image attachments (e.g. organizational structure chart).
+        Route::post('/forms/{form}/attachments', [AttachmentController::class, 'store']);
+        Route::get('/forms/{form}/attachments/{attachment}', [AttachmentController::class, 'show']);
+        Route::delete('/forms/{form}/attachments/{attachment}', [AttachmentController::class, 'destroy']);
     });
 
     // AI Assist (form drafting + evaluator/lead comment drafting)

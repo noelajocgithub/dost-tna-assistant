@@ -1,9 +1,19 @@
-import { TextAreaField, YesNo } from '../Field'
+import { TextAreaField } from '../Field'
 import DynamicTable from '../DynamicTable'
+import ImageUploadField from '../ImageUploadField'
 
-export default function Production({ value, onChange, aiSlot }) {
+export default function Production({
+  value,
+  onChange,
+  aiSlot,
+  formId,
+  editable,
+  attachments = [],
+  onAttachmentUploaded,
+  onAttachmentRemoved,
+}) {
   const p = { value, onChange }
-  const gmp = value?.has_gmp_haccp === 'Yes'
+  const plantLayout = attachments.find((a) => a.type === 'plant_layout') || null
 
   return (
     <div className="space-y-6">
@@ -16,6 +26,19 @@ export default function Production({ value, onChange, aiSlot }) {
           { key: 'unit', label: 'Unit' },
           { key: 'unit_cost', label: 'Unit Cost (PHP)', type: 'currency' },
           { key: 'volume_year', label: 'Unit Volume / Year', type: 'decimal' },
+        ]}
+        {...p}
+      />
+
+      <DynamicTable
+        label="Cost of Production"
+        name="cost_of_production"
+        columns={[
+          { key: 'product', label: 'Product' },
+          { key: 'unit', label: 'Unit' },
+          { key: 'volume_year', label: 'Volume / Year', type: 'decimal' },
+          { key: 'unit_cost', label: 'Unit Cost of Production (PHP)', type: 'currency' },
+          { key: 'annual_cost', label: 'Annual Cost of Production (PHP)', type: 'currency' },
         ]}
         {...p}
       />
@@ -46,17 +69,28 @@ export default function Production({ value, onChange, aiSlot }) {
         {...p}
       />
 
-      <TextAreaField label="Production Problems" name="production_problems" header={aiSlot?.('production_problems')} {...p} />
-      <TextAreaField label="Waste Management" name="waste_management" header={aiSlot?.('waste_management')} {...p} />
-      <TextAreaField label="Production Plan" name="production_plan" header={aiSlot?.('production_plan')} {...p} />
-      <TextAreaField label="Process Flow Description" name="process_flow" {...p} />
+      <TextAreaField label="Production Problems and Concerns" name="production_problems" header={aiSlot?.('production_problems')} {...p} />
+      <TextAreaField label="Production Waste Management System" name="waste_management" header={aiSlot?.('waste_management')} {...p} />
+      <TextAreaField label="Production System" name="production_plan" header={aiSlot?.('production_plan')} {...p} />
+      <TextAreaField label="Production Planning and Control" name="production_planning_control" header={aiSlot?.('production_planning_control')} {...p} />
+      <TextAreaField label="Work Study/Improvement" name="work_study_improvement" header={aiSlot?.('work_study_improvement')} {...p} />
+      <TextAreaField label="Quality Assurance System" name="quality_assurance_system" header={aiSlot?.('quality_assurance_system')} {...p} />
+      <TextAreaField label="Product and Process Performance & Improvement" name="product_process_performance" header={aiSlot?.('product_process_performance')} {...p} />
+      <ImageUploadField
+        label="Plant Layout (image)"
+        formId={formId}
+        type="plant_layout"
+        attachment={plantLayout}
+        editable={editable}
+        disabled={!editable}
+        onUploaded={onAttachmentUploaded}
+        onRemoved={onAttachmentRemoved}
+      />
+      <TextAreaField label="Process Flow" name="process_flow" header={aiSlot?.('process_flow')} {...p} />
       <TextAreaField label="Inventory System" name="inventory_system" header={aiSlot?.('inventory_system')} {...p} />
       <TextAreaField label="Maintenance Program" name="maintenance_program" header={aiSlot?.('maintenance_program')} {...p} />
 
-      <YesNo label="GMP / HACCP Activities?" name="has_gmp_haccp" {...p} />
-      {gmp && (
-        <TextAreaField label="GMP / HACCP Details" name="gmp_haccp_details" {...p} />
-      )}
+      <TextAreaField label="GMP/HACCP Activities" name="gmp_haccp_details" header={aiSlot?.('gmp_haccp_details')} {...p} />
 
       <TextAreaField label="Purchasing / Supplies System" name="purchasing_system" header={aiSlot?.('purchasing_system')} {...p} />
     </div>

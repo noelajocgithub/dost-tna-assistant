@@ -19,12 +19,19 @@ const FIELD_INSTRUCTIONS = {
   business_background: 'Write a concise 3-paragraph business background.',
   products_services: 'Describe the products and services offered in 1-2 paragraphs.',
   reason_for_assistance: 'Draft a clear statement of why the enterprise needs DOST assistance.',
+  organizational_structure: 'Describe the enterprise\'s organizational structure, key roles, and reporting relationships.',
   five_year_plan: 'Write a realistic 5-year business plan summary.',
   ten_year_plan: 'Write a realistic 10-year business plan summary.',
   vision_mission_values: 'Draft a vision statement, mission statement, and 3-5 core values.',
   production_problems: 'Summarize likely production problems based on the equipment and context.',
   waste_management: 'Describe a practical waste management approach.',
-  production_plan: 'Write a short production improvement plan.',
+  production_plan: 'Describe the enterprise\'s production system.',
+  production_planning_control: 'Describe the enterprise\'s production planning and control practices.',
+  work_study_improvement: 'Describe work study and process improvement practices.',
+  quality_assurance_system: 'Describe the quality assurance system in place.',
+  product_process_performance: 'Describe product and process performance monitoring and improvement.',
+  process_flow: 'Describe the production process flow step by step.',
+  gmp_haccp_details: 'Describe the enterprise\'s GMP/HACCP activities and food-safety practices.',
   inventory_system: 'Describe an appropriate inventory system.',
   maintenance_program: 'Describe an equipment maintenance program.',
   purchasing_system: 'Describe a purchasing and supplies management system.',
@@ -32,6 +39,7 @@ const FIELD_INSTRUCTIONS = {
   promotional_strategies: 'Suggest promotional strategies suited to this enterprise.',
   market_competitors: 'Summarize the likely competitive landscape.',
   cash_flow: 'Summarize the cash flow / financial position narrative.',
+  capital_sources: 'Describe the enterprise\'s sources of capital and credit.',
   accounting_system: 'Describe an appropriate accounting system.',
   hiring_criteria: 'Draft hiring criteria for key roles.',
   incentives: 'Suggest employee incentive practices.',
@@ -53,6 +61,7 @@ export default function FormWizard() {
   const [enterpriseName, setEnterpriseName] = useState('')
   const [returnReason, setReturnReason] = useState(null)
   const [sectionsData, setSectionsData] = useState({})
+  const [attachments, setAttachments] = useState([])
   const [step, setStep] = useState(0)
   const [saveState, setSaveState] = useState('idle') // idle|saving|saved|error
   const [lastSaved, setLastSaved] = useState(null)
@@ -90,6 +99,7 @@ export default function FormWizard() {
         setEnterpriseName(res.form.enterprise_name || '')
         setReturnReason(res.form.return_reason)
         setSectionsData(res.sections || {})
+        setAttachments(res.attachments || [])
         setLastSaved(res.form.updated_at)
       })
       .catch(() => setNotFound(true))
@@ -140,6 +150,17 @@ export default function FormWizard() {
         setEnterpriseName(value)
       }
     }
+  }
+
+  // Attachment helpers: keep one record per type in local state.
+  function handleAttachmentUploaded(record) {
+    setAttachments((prev) => [
+      ...prev.filter((a) => a.type !== record.type),
+      record,
+    ])
+  }
+  function handleAttachmentRemoved(attachmentId) {
+    setAttachments((prev) => prev.filter((a) => a.id !== attachmentId))
   }
 
   async function goToStep(target) {
@@ -327,6 +348,11 @@ export default function FormWizard() {
               value={sectionsData[active.key] || {}}
               onChange={makeUpdater(active.key)}
               aiSlot={aiSlot}
+              formId={id}
+              editable={editable}
+              attachments={attachments}
+              onAttachmentUploaded={handleAttachmentUploaded}
+              onAttachmentRemoved={handleAttachmentRemoved}
             />
           </fieldset>
         )}
