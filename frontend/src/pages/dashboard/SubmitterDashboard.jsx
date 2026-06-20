@@ -1,11 +1,22 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Plus, FileText, Trash2, Eye, Pencil } from 'lucide-react'
+import {
+  Plus,
+  FileText,
+  Trash2,
+  Eye,
+  Pencil,
+  AlertCircle,
+  CheckCircle2,
+  Users,
+} from 'lucide-react'
 import { formsApi } from '../../api/forms'
+import { dashboardApi } from '../../api/dashboard'
 import { formatDate } from '../../utils/format'
 import Card from '../../components/ui/Card'
 import Button from '../../components/ui/Button'
 import Modal from '../../components/ui/Modal'
+import StatCard, { StatusBreakdown } from '../../components/ui/StatCard'
 import { Input, Textarea } from '../../components/ui/Input'
 import { StatusBadge } from '../../components/ui/Badge'
 import { useAuthStore } from '../../store/authStore'
@@ -20,6 +31,7 @@ export default function SubmitterDashboard() {
   const canCreate = role === 'enterprise' || role === 'provincial_staff'
   const isDirector = role === 'provincial_director'
   const [forms, setForms] = useState([])
+  const [summary, setSummary] = useState(null)
   const [loading, setLoading] = useState(true)
   const [modalOpen, setModalOpen] = useState(false)
   const [name, setName] = useState('')
@@ -35,7 +47,10 @@ export default function SubmitterDashboard() {
   }
 
   useEffect(() => {
-    loadForms().finally(() => setLoading(false))
+    Promise.all([
+      loadForms(),
+      dashboardApi.get().then(setSummary).catch(() => {}),
+    ]).finally(() => setLoading(false))
   }, [])
 
   async function handleCreate() {
@@ -90,6 +105,88 @@ export default function SubmitterDashboard() {
           </Button>
         )}
       </div>
+
+      {summary && (
+        <div className="space-y-4">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <StatCard
+              label="Total Forms"
+              value={summary.stats.total}
+              icon={FileText}
+              accent="primary"
+            />
+            <StatCard
+              label="Validated"
+              value={summary.stats.by_status?.validated ?? 0}
+              icon={CheckCircle2}
+              accent="green"
+            />
+            <StatCard
+              label="Needs Attention"
+              value={summary.stats.needs_attention}
+              icon={AlertCircle}
+              accent="red"
+              hint={
+                isProvincialStaff ? 'Returned or draft' : 'Returned for revision'
+              }
+            />
+            {isDirector ? (
+              <StatCard
+                label="Pending Deletion"
+                value={summary.extra?.pending_deletion ?? 0}
+                icon={Trash2}
+                accent="yellow"
+              />
+            ) : isProvincialStaff ? (
+              <StatCard
+                label="From Province"
+                value={summary.extra?.province ?? 0}
+                icon={Users}
+                accent="cyan"
+                hint="Enterprise forms in your area"
+              />
+            ) : (
+              <StatCard
+                label="In Review"
+                value={
+                  (summary.stats.by_status?.submitted ?? 0) +
+                  (summary.stats.by_status?.under_review ?? 0)
+                }
+                icon={Eye}
+                accent="cyan"
+              />
+            )}
+          </div>
+
+          <Card className="p-4">
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">
+              Status Breakdown
+            </p>
+            <StatusBreakdown byStatus={summary.stats.by_status} />
+          </Card>
+
+          {isDirector && summary.extra?.by_staff?.length > 0 && (
+            <Card className="p-4">
+              <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">
+                Top Provincial Staff by Submissions
+              </p>
+              <div className="space-y-2">
+                {summary.extra.by_staff.map((s, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center justify-between text-sm"
+                  >
+                    <span className="text-charcoal">{s.name}</span>
+                    <span className="font-semibold text-charcoal">
+                      {s.count}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          )}
+        </div>
+      )}
 
       <Card>
         {loading ? (

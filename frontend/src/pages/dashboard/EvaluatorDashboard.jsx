@@ -1,18 +1,25 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ClipboardCheck, Eye, Pencil } from 'lucide-react'
+import { ClipboardCheck, Eye, Pencil, Inbox, CheckCircle2, RotateCcw } from 'lucide-react'
 import { evaluationsApi } from '../../api/evaluations'
+import { dashboardApi } from '../../api/dashboard'
 import { formatDate } from '../../utils/format'
 import Card from '../../components/ui/Card'
+import StatCard from '../../components/ui/StatCard'
 import { StatusBadge } from '../../components/ui/Badge'
 import { Select } from '../../components/ui/Input'
 
 export default function EvaluatorDashboard() {
   const navigate = useNavigate()
   const [forms, setForms] = useState([])
+  const [summary, setSummary] = useState(null)
   const [loading, setLoading] = useState(true)
   const [status, setStatus] = useState('')
   const [province, setProvince] = useState('')
+
+  useEffect(() => {
+    dashboardApi.get().then(setSummary).catch(() => {})
+  }, [])
 
   useEffect(() => {
     setLoading(true)
@@ -30,6 +37,36 @@ export default function EvaluatorDashboard() {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-charcoal">Evaluation Queue</h1>
+
+      {summary && (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <StatCard
+            label="Awaiting Review"
+            value={summary.stats.awaiting}
+            icon={Inbox}
+            accent="cyan"
+            hint="Newly submitted"
+          />
+          <StatCard
+            label="Under Review"
+            value={summary.stats.in_review}
+            icon={ClipboardCheck}
+            accent="yellow"
+          />
+          <StatCard
+            label="Validated"
+            value={summary.stats.validated}
+            icon={CheckCircle2}
+            accent="green"
+          />
+          <StatCard
+            label="Returned"
+            value={summary.stats.returned}
+            icon={RotateCcw}
+            accent="red"
+          />
+        </div>
+      )}
 
       <Card className="p-4">
         <div className="flex flex-wrap gap-4">

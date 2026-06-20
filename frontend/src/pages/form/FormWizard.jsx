@@ -35,7 +35,10 @@ const FIELD_INSTRUCTIONS = {
   accounting_system: 'Describe an appropriate accounting system.',
   hiring_criteria: 'Draft hiring criteria for key roles.',
   incentives: 'Suggest employee incentive practices.',
+  training_development: 'Describe training and development programs for employees.',
   safety_measures: 'Describe workplace safety measures.',
+  employee_welfare: 'Describe other employee welfare programs and benefits.',
+  other_concerns: 'Summarize any other relevant concerns for this enterprise.',
 }
 
 const REVIEW_INDEX = STEPS.length // step 9
