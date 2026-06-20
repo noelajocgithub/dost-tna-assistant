@@ -1,0 +1,13 @@
+# OS junk
+.DS_Store
+**/.DS_Store
+
+# Office temp lock files
+~$*
+
+# Editor
+.idea/
+.vscode/
+
+# Env (component-level .gitignores also apply)
+**/.env.local
