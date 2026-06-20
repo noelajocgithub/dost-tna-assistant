@@ -7,6 +7,7 @@ use App\Models\AiConfig;
 use App\Models\TnaForm;
 use App\Models\User;
 use App\Services\AIService;
+use App\Services\AiPromptService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -283,5 +284,41 @@ class AdminController extends Controller
             ->get(['id', 'user_name', 'action', 'description', 'subject_type', 'subject_id', 'ip', 'created_at']);
 
         return response()->json($logs);
+    }
+
+    // ---- AI prompts ----
+
+    /** All AI Assist prompts with their current and default text. */
+    public function aiPrompts(AiPromptService $prompts): JsonResponse
+    {
+        return response()->json($prompts->detailed());
+    }
+
+    /** Override a single prompt's instruction. */
+    public function updateAiPrompt(Request $request, string $key, AiPromptService $prompts): JsonResponse
+    {
+        abort_unless($prompts->exists($key), 404, 'Unknown prompt.');
+
+        $valid = $request->validate([
+            'instruction' => ['required', 'string', 'max:5000'],
+        ]);
+
+        $prompts->update($key, $valid['instruction']);
+
+        ActivityLog::record('ai.prompt_update', "Updated AI prompt \"{$key}\"", null, ['key' => $key]);
+
+        return response()->json(['message' => 'Prompt saved.']);
+    }
+
+    /** Restore a prompt to its built-in default. */
+    public function resetAiPrompt(string $key, AiPromptService $prompts): JsonResponse
+    {
+        abort_unless($prompts->exists($key), 404, 'Unknown prompt.');
+
+        $instruction = $prompts->reset($key);
+
+        ActivityLog::record('ai.prompt_reset', "Reset AI prompt \"{$key}\" to default", null, ['key' => $key]);
+
+        return response()->json(['message' => 'Prompt reset to default.', 'instruction' => $instruction]);
     }
 }

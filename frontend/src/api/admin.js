@@ -22,4 +22,9 @@ export const adminApi = {
     api.post(`/admin/deletion-requests/${id}/reject`).then((r) => r.data),
   activityLogs: (params = {}) =>
     api.get('/admin/activity-logs', { params }).then((r) => r.data),
+  aiPrompts: () => api.get('/admin/ai-prompts').then((r) => r.data),
+  updateAiPrompt: (key, instruction) =>
+    api.put(`/admin/ai-prompts/${key}`, { instruction }).then((r) => r.data),
+  resetAiPrompt: (key) =>
+    api.post(`/admin/ai-prompts/${key}/reset`).then((r) => r.data),
 }

@@ -114,7 +114,17 @@ export default function EvaluationReview() {
     loading: false,
     result: '',
     error: '',
+    instruction: '',
   })
+  // Admin-managed prompt templates for evaluator comments.
+  const [prompts, setPrompts] = useState({})
+
+  useEffect(() => {
+    aiApi
+      .prompts()
+      .then(setPrompts)
+      .catch(() => {})
+  }, [])
 
   useEffect(() => {
     evaluationsApi
@@ -159,7 +169,7 @@ export default function EvaluationReview() {
     }
   }
 
-  async function runAI(target) {
+  async function runAI(target, instructionOverride) {
     const d = data
     let field
     let context
@@ -167,7 +177,11 @@ export default function EvaluationReview() {
     if (target.type === 'section') {
       field = `evaluator_comment_${target.key}`
       context = d.sections[target.key] || {}
-      instruction = `You are a DOST regional evaluator reviewing the "${d.section_titles[target.key]}" section of an MSME TNA Form 01. Based on the applicant's data, draft a concise, professional evaluator comment (2-4 sentences) noting strengths, gaps, or compliance concerns. Return only the comment text.`
+      const tmpl =
+        prompts.eval_section_comment ||
+        'You are a DOST regional evaluator reviewing the "{section}" section of an MSME TNA Form 01. Based on the applicant\'s data, draft a concise, professional evaluator comment (2-4 sentences) noting strengths, gaps, or compliance concerns. Return only the comment text.'
+      instruction =
+        instructionOverride ?? tmpl.replaceAll('{section}', d.section_titles[target.key])
     } else {
       field = 'overall_evaluation_comment'
       context = {
@@ -175,9 +189,11 @@ export default function EvaluationReview() {
         section_decisions: d.evaluations,
       }
       instruction =
+        instructionOverride ??
+        prompts.eval_overall_comment ??
         'You are a DOST regional evaluator. Draft a concise overall evaluation summary comment (3-5 sentences) for this TNA based on the section decisions and applicant data. Return only the comment text.'
     }
-    setAi({ open: true, target, field, loading: true, result: '', error: '' })
+    setAi({ open: true, target, field, loading: true, result: '', error: '', instruction })
     try {
       const { text } = await aiApi.assist(field, context, instruction)
       setAi((a) => ({ ...a, loading: false, result: text }))
@@ -382,9 +398,11 @@ export default function EvaluationReview() {
         loading={ai.loading}
         result={ai.result}
         error={ai.error}
+        instruction={ai.instruction}
+        onInstructionChange={(v) => setAi((a) => ({ ...a, instruction: v }))}
         onClose={() => setAi((a) => ({ ...a, open: false }))}
         onUse={useSuggestion}
-        onRegenerate={() => runAI(ai.target)}
+        onRegenerate={() => runAI(ai.target, ai.instruction)}
       />
     </div>
   )

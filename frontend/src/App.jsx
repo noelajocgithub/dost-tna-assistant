@@ -9,6 +9,7 @@ import FormWizard from './pages/form/FormWizard'
 import EvaluationReview from './pages/review/EvaluationReview'
 import UserManagement from './pages/admin/UserManagement'
 import AIConfig from './pages/admin/AIConfig'
+import AIPrompts from './pages/admin/AIPrompts'
 import DeletionRequests from './pages/admin/DeletionRequests'
 import AuditLog from './pages/admin/AuditLog'
 
@@ -84,6 +85,14 @@ export default function App() {
             element={
               <ProtectedRoute roles={['admin']}>
                 <AIConfig />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/ai-prompts"
+            element={
+              <ProtectedRoute roles={['admin']}>
+                <AIPrompts />
               </ProtectedRoute>
             }
           />

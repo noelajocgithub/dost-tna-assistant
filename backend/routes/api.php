@@ -48,6 +48,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/ai/assist', [AIController::class, 'assist'])
         ->middleware('role:enterprise,provincial_staff,provincial_director,regional_evaluator,tna_lead', 'throttle:20,1');
 
+    // Resolved prompt defaults (admin overrides + config) for the AI panels.
+    Route::get('/ai/prompts', [AIController::class, 'promptMap'])
+        ->middleware('role:enterprise,provincial_staff,provincial_director,regional_evaluator,tna_lead');
+
     // Evaluation (regional evaluators + TNA lead)
     Route::middleware('role:regional_evaluator,tna_lead')->group(function () {
         Route::get('/evaluations', [EvaluationController::class, 'index']);
@@ -69,5 +73,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/deletion-requests/{form}/approve', [AdminController::class, 'approveDeletion']);
         Route::post('/deletion-requests/{form}/reject', [AdminController::class, 'rejectDeletion']);
         Route::get('/activity-logs', [AdminController::class, 'activityLogs']);
+        Route::get('/ai-prompts', [AdminController::class, 'aiPrompts']);
+        Route::put('/ai-prompts/{key}', [AdminController::class, 'updateAiPrompt']);
+        Route::post('/ai-prompts/{key}/reset', [AdminController::class, 'resetAiPrompt']);
     });
 });

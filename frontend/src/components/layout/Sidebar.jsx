@@ -5,6 +5,7 @@ import {
   ClipboardCheck,
   Users,
   Cpu,
+  MessageSquareText,
   Trash2,
   ScrollText,
 } from 'lucide-react'
@@ -36,6 +37,7 @@ const NAV = {
     { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { to: '/admin/users', label: 'User Management', icon: Users },
     { to: '/admin/ai', label: 'AI Configuration', icon: Cpu },
+    { to: '/admin/ai-prompts', label: 'AI Prompts', icon: MessageSquareText },
     { to: '/admin/deletion-requests', label: 'Deletion Requests', icon: Trash2 },
     { to: '/admin/audit-log', label: 'Audit Log', icon: ScrollText },
   ],

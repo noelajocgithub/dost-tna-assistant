@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ActivityLog;
 use App\Services\AIService;
+use App\Services\AiPromptService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -11,7 +12,16 @@ use Throwable;
 
 class AIController extends Controller
 {
-    public function __construct(private AIService $ai) {}
+    public function __construct(
+        private AIService $ai,
+        private AiPromptService $prompts,
+    ) {}
+
+    /** Resolved prompt map (defaults + admin overrides) for the frontend. */
+    public function promptMap(): JsonResponse
+    {
+        return response()->json($this->prompts->map());
+    }
 
     /** Proxy a narrative-generation prompt to the active LLM provider. */
     public function assist(Request $request): JsonResponse
@@ -55,20 +65,11 @@ class AIController extends Controller
 
     private function buildPrompt(string $section, array $context, string $instruction): string
     {
-        $lines = [
-            'You are assisting an MSME with the DOST Technology Needs Assessment (TNA) Form 01.',
-            "Section: {$section}",
-            '',
-            'Use ONLY the context below. Write in clear, professional English suitable for a',
-            'Philippine government technology assessment form. Return only the narrative text,',
-            'with no preamble, headings, or markdown.',
-            '',
-            'Context:',
-        ];
-
+        // Render the context block as "- label: value" lines.
         if (empty($context)) {
-            $lines[] = '(no additional context provided)';
+            $contextBlock = '(no additional context provided)';
         } else {
+            $lines = [];
             foreach ($context as $key => $value) {
                 if (is_array($value)) {
                     $value = json_encode($value);
@@ -76,11 +77,14 @@ class AIController extends Controller
                 $label = str_replace('_', ' ', (string) $key);
                 $lines[] = "- {$label}: {$value}";
             }
+            $contextBlock = implode("\n", $lines);
         }
 
-        $lines[] = '';
-        $lines[] = "Task: {$instruction}";
-
-        return implode("\n", $lines);
+        // The scaffold is admin-editable; substitute the placeholders.
+        return strtr($this->prompts->system(), [
+            '{section}' => $section,
+            '{context}' => $contextBlock,
+            '{instruction}' => $instruction,
+        ]);
     }
 }

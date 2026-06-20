@@ -28,6 +28,12 @@ class AIService
 
     private function dispatch(AiConfig $config, string $prompt): string
     {
+        // LLM calls (especially a local Ollama model loading into memory) can run
+        // well past PHP's default 30s max_execution_time. Without this, the request
+        // fatals and takes down the single-process `php artisan serve` dev server.
+        // Allow a little more than the longest HTTP client timeout below (120s).
+        @set_time_limit(150);
+
         return match ($config->provider) {
             'claude' => $this->callClaude($config, $prompt),
             'gemini' => $this->callGemini($config, $prompt),

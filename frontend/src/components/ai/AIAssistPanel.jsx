@@ -8,6 +8,8 @@ export default function AIAssistPanel({
   loading,
   result,
   error,
+  instruction,
+  onInstructionChange,
   onClose,
   onUse,
   onRegenerate,
@@ -28,6 +30,25 @@ export default function AIAssistPanel({
         <div className="px-4 py-2 text-xs text-gray-500 border-b border-white/40">
           Field: <span className="text-charcoal">{field}</span>
         </div>
+
+        {/* Editable prompt (this session only) */}
+        {onInstructionChange && (
+          <div className="px-4 py-3 border-b border-white/40 space-y-1">
+            <label className="block text-xs font-medium text-gray-500">
+              Prompt (editable for this session)
+            </label>
+            <textarea
+              value={instruction ?? ''}
+              onChange={(e) => onInstructionChange(e.target.value)}
+              rows={3}
+              className="glass-input w-full text-charcoal text-xs px-3 py-2 rounded-lg resize-y"
+              placeholder="Instruction sent to the AI…"
+            />
+            <p className="text-[11px] text-gray-400">
+              Edits apply only here. Use Regenerate to run with the new prompt.
+            </p>
+          </div>
+        )}
 
         {/* Loading bar */}
         {loading && (

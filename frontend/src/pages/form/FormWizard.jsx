@@ -74,7 +74,17 @@ export default function FormWizard() {
     loading: false,
     result: '',
     error: '',
+    instruction: '',
   })
+  // Prompt instructions (admin-managed defaults), with the built-in map as fallback.
+  const [prompts, setPrompts] = useState(FIELD_INSTRUCTIONS)
+
+  useEffect(() => {
+    aiApi
+      .prompts()
+      .then((map) => setPrompts((prev) => ({ ...prev, ...map })))
+      .catch(() => {})
+  }, [])
 
   const timers = useRef({})
   const pending = useRef({})
@@ -169,15 +179,24 @@ export default function FormWizard() {
     window.scrollTo({ top: 0 })
   }
 
-  async function runAI(sectionKey, field) {
-    setAi({ open: true, field, section: sectionKey, loading: true, result: '', error: '' })
+  async function runAI(sectionKey, field, instructionOverride) {
+    const instruction =
+      instructionOverride ??
+      prompts[field] ??
+      `Write the "${field.replace(/_/g, ' ')}" narrative for a DOST TNA form.`
+    setAi({
+      open: true,
+      field,
+      section: sectionKey,
+      loading: true,
+      result: '',
+      error: '',
+      instruction,
+    })
     const context = {
       ...(sectionsData.enterprise_info || {}),
       ...(sectionsData[sectionKey] || {}),
     }
-    const instruction =
-      FIELD_INSTRUCTIONS[field] ||
-      `Write the "${field.replace(/_/g, ' ')}" narrative for a DOST TNA form.`
     try {
       const { text } = await aiApi.assist(field, context, instruction)
       setAi((a) => ({ ...a, loading: false, result: text }))
@@ -380,9 +399,11 @@ export default function FormWizard() {
         loading={ai.loading}
         result={ai.result}
         error={ai.error}
+        instruction={ai.instruction}
+        onInstructionChange={(v) => setAi((a) => ({ ...a, instruction: v }))}
         onClose={() => setAi((a) => ({ ...a, open: false }))}
         onUse={useSuggestion}
-        onRegenerate={() => runAI(ai.section, ai.field)}
+        onRegenerate={() => runAI(ai.section, ai.field, ai.instruction)}
       />
     </div>
   )
