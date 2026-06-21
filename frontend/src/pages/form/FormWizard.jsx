@@ -193,10 +193,18 @@ export default function FormWizard() {
       error: '',
       instruction,
     })
-    const context = {
-      ...(sectionsData.enterprise_info || {}),
-      ...(sectionsData[sectionKey] || {}),
+    // Feed every completed step into the context so the AI can cross-reference
+    // data entered elsewhere. Current step is merged last so its values win.
+    const hasData = (d) =>
+      d &&
+      Object.values(d).some((v) =>
+        Array.isArray(v) ? v.length : v !== '' && v != null,
+      )
+    const context = { ...(sectionsData.enterprise_info || {}) }
+    for (const s of STEPS) {
+      if (hasData(sectionsData[s.key])) Object.assign(context, sectionsData[s.key])
     }
+    Object.assign(context, sectionsData[sectionKey] || {})
     try {
       const { text } = await aiApi.assist(field, context, instruction)
       setAi((a) => ({ ...a, loading: false, result: text }))
