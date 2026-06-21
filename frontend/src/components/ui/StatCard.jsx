@@ -2,12 +2,12 @@ import Card from './Card'
 
 // Accent color classes for the value + icon chip.
 const ACCENTS = {
-  primary: { text: 'text-primary', chip: 'bg-primary/10 text-primary' },
-  cyan: { text: 'text-cyan', chip: 'bg-cyan/10 text-cyan' },
-  green: { text: 'text-green', chip: 'bg-green/10 text-green' },
-  yellow: { text: 'text-yellow-600', chip: 'bg-yellow/20 text-yellow-700' },
-  red: { text: 'text-red-600', chip: 'bg-red-100 text-red-600' },
-  charcoal: { text: 'text-charcoal', chip: 'bg-charcoal/10 text-charcoal' },
+  primary: { text: 'text-primary', chip: 'bg-primary/15 text-primary' },
+  cyan: { text: 'text-cyan', chip: 'bg-cyan/15 text-cyan' },
+  green: { text: 'text-green', chip: 'bg-green/15 text-green' },
+  yellow: { text: 'text-yellow-300', chip: 'bg-yellow/15 text-yellow-300' },
+  red: { text: 'text-red-400', chip: 'bg-red-500/15 text-red-400' },
+  charcoal: { text: 'text-charcoal', chip: 'bg-white/10 text-charcoal' },
 }
 
 // Glass KPI card: a label, a big value, optional icon and hint.
@@ -30,11 +30,11 @@ export default function StatCard({
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+          <p className="text-xs font-medium text-muted uppercase tracking-wide">
             {label}
           </p>
           <p className={`text-2xl font-bold mt-1 ${a.text}`}>{value}</p>
-          {hint && <p className="text-xs text-gray-500 mt-1 truncate">{hint}</p>}
+          {hint && <p className="text-xs text-muted mt-1 truncate">{hint}</p>}
         </div>
         {Icon && (
           <span className={`shrink-0 p-2 rounded-xl ${a.chip}`}>
@@ -48,7 +48,7 @@ export default function StatCard({
 
 // Compact row of status counts reusing the status palette.
 const STATUS_META = {
-  draft: { label: 'Draft', dot: 'bg-neutral' },
+  draft: { label: 'Draft', dot: 'bg-white/40' },
   submitted: { label: 'Submitted', dot: 'bg-cyan' },
   under_review: { label: 'Under Review', dot: 'bg-yellow' },
   validated: { label: 'Validated', dot: 'bg-green' },

@@ -5,6 +5,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import AppShell from './components/layout/AppShell'
 import Login from './pages/auth/Login'
 import Dashboard from './pages/dashboard/Dashboard'
+import EvaluatorDashboard from './pages/dashboard/EvaluatorDashboard'
 import FormWizard from './pages/form/FormWizard'
 import EvaluationReview from './pages/review/EvaluationReview'
 import UserManagement from './pages/admin/UserManagement'
@@ -59,15 +60,15 @@ export default function App() {
           <Route
             path="/evaluate"
             element={
-              <ProtectedRoute roles={['regional_evaluator', 'tna_lead']}>
-                <Dashboard />
+              <ProtectedRoute roles={['regional_evaluator', 'tna_lead', 'regional_director']}>
+                <EvaluatorDashboard />
               </ProtectedRoute>
             }
           />
           <Route
             path="/evaluate/:id"
             element={
-              <ProtectedRoute roles={['regional_evaluator', 'tna_lead']}>
+              <ProtectedRoute roles={['regional_evaluator', 'tna_lead', 'regional_director']}>
                 <EvaluationReview />
               </ProtectedRoute>
             }
@@ -75,7 +76,7 @@ export default function App() {
           <Route
             path="/admin/users"
             element={
-              <ProtectedRoute roles={['admin']}>
+              <ProtectedRoute roles={['admin', 'regional_director']}>
                 <UserManagement />
               </ProtectedRoute>
             }
@@ -83,7 +84,7 @@ export default function App() {
           <Route
             path="/admin/ai"
             element={
-              <ProtectedRoute roles={['admin']}>
+              <ProtectedRoute roles={['admin', 'regional_director']}>
                 <AIConfig />
               </ProtectedRoute>
             }
@@ -91,7 +92,7 @@ export default function App() {
           <Route
             path="/admin/ai-prompts"
             element={
-              <ProtectedRoute roles={['admin']}>
+              <ProtectedRoute roles={['admin', 'regional_director']}>
                 <AIPrompts />
               </ProtectedRoute>
             }
@@ -99,7 +100,7 @@ export default function App() {
           <Route
             path="/admin/deletion-requests"
             element={
-              <ProtectedRoute roles={['admin']}>
+              <ProtectedRoute roles={['admin', 'regional_director']}>
                 <DeletionRequests />
               </ProtectedRoute>
             }
@@ -107,7 +108,7 @@ export default function App() {
           <Route
             path="/admin/audit-log"
             element={
-              <ProtectedRoute roles={['admin']}>
+              <ProtectedRoute roles={['admin', 'regional_director']}>
                 <AuditLog />
               </ProtectedRoute>
             }

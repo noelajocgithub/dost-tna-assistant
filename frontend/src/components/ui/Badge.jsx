@@ -1,10 +1,10 @@
 // Flat status badges. Colors per Blueprint §2.4.
 const STATUS = {
-  draft: 'bg-neutral text-charcoal border-neutral',
-  submitted: 'bg-cyan text-white border-cyan',
-  under_review: 'bg-yellow text-charcoal border-yellow',
-  validated: 'bg-green text-white border-green',
-  returned: 'bg-red-100 text-red-700 border-red-300',
+  draft: 'bg-white/10 text-muted border-white/15',
+  submitted: 'bg-cyan/15 text-cyan border-cyan/30',
+  under_review: 'bg-yellow/15 text-yellow-300 border-yellow/30',
+  validated: 'bg-green/15 text-green border-green/30',
+  returned: 'bg-red-500/15 text-red-300 border-red-500/30',
 }
 
 const STATUS_LABELS = {
@@ -27,16 +27,18 @@ export function StatusBadge({ status }) {
 }
 
 const ROLE = {
-  admin: 'bg-primary text-white border-primary',
-  tna_lead: 'bg-primary text-white border-primary',
-  regional_evaluator: 'bg-cyan text-white border-cyan',
-  provincial_director: 'bg-green text-white border-green',
-  provincial_staff: 'bg-charcoal text-white border-charcoal',
-  enterprise: 'bg-neutral text-charcoal border-neutral',
+  admin: 'bg-primary/15 text-primary border-primary/30',
+  regional_director: 'bg-secondary/15 text-secondary border-secondary/30',
+  tna_lead: 'bg-primary/15 text-primary border-primary/30',
+  regional_evaluator: 'bg-cyan/15 text-cyan border-cyan/30',
+  provincial_director: 'bg-green/15 text-green border-green/30',
+  provincial_staff: 'bg-white/10 text-charcoal border-white/15',
+  enterprise: 'bg-white/10 text-muted border-white/15',
 }
 
 const ROLE_LABELS = {
   admin: 'Admin',
+  regional_director: 'Regional Director',
   tna_lead: 'TNA Lead',
   regional_evaluator: 'Evaluator',
   provincial_director: 'Provincial Director',

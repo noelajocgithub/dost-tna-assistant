@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { ClipboardCheck, Eye, Pencil, Inbox, CheckCircle2, RotateCcw } from 'lucide-react'
 import { evaluationsApi } from '../../api/evaluations'
 import { dashboardApi } from '../../api/dashboard'
+import { useAuthStore } from '../../store/authStore'
 import { formatDate } from '../../utils/format'
 import Card from '../../components/ui/Card'
 import StatCard from '../../components/ui/StatCard'
@@ -11,6 +12,8 @@ import { Select } from '../../components/ui/Input'
 
 export default function EvaluatorDashboard() {
   const navigate = useNavigate()
+  // The regional director gets this queue read-only (no evaluation editing).
+  const readOnly = useAuthStore((s) => s.user?.role) === 'regional_director'
   const [forms, setForms] = useState([])
   const [summary, setSummary] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -38,7 +41,7 @@ export default function EvaluatorDashboard() {
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-charcoal">Evaluation Queue</h1>
 
-      {summary && (
+      {summary && !readOnly && (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard
             label="Awaiting Review"
@@ -157,16 +160,18 @@ export default function EvaluatorDashboard() {
                     >
                       <Eye size={14} strokeWidth={1.5} />
                     </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        navigate(`/evaluate/${f.id}?mode=edit`)
-                      }}
-                      title="Edit evaluation"
-                      className="text-cyan border border-cyan px-2 py-1 rounded-lg hover:bg-cyan hover:text-white"
-                    >
-                      <Pencil size={14} strokeWidth={1.5} />
-                    </button>
+                    {!readOnly && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          navigate(`/evaluate/${f.id}?mode=edit`)
+                        }}
+                        title="Edit evaluation"
+                        className="text-cyan border border-cyan px-2 py-1 rounded-lg hover:bg-cyan hover:text-white"
+                      >
+                        <Pencil size={14} strokeWidth={1.5} />
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}

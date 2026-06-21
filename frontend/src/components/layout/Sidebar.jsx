@@ -41,6 +41,15 @@ const NAV = {
     { to: '/admin/deletion-requests', label: 'Deletion Requests', icon: Trash2 },
     { to: '/admin/audit-log', label: 'Audit Log', icon: ScrollText },
   ],
+  regional_director: [
+    { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { to: '/evaluate', label: 'All Forms & Evaluations', icon: ClipboardCheck },
+    { to: '/admin/users', label: 'User Management', icon: Users },
+    { to: '/admin/ai', label: 'AI Configuration', icon: Cpu },
+    { to: '/admin/ai-prompts', label: 'AI Prompts', icon: MessageSquareText },
+    { to: '/admin/deletion-requests', label: 'Deletion Requests', icon: Trash2 },
+    { to: '/admin/audit-log', label: 'Audit Log', icon: ScrollText },
+  ],
 }
 
 export default function Sidebar({ open }) {
@@ -49,7 +58,7 @@ export default function Sidebar({ open }) {
 
   return (
     <aside
-      className={`glass-dark text-white w-56 shrink-0 ${
+      className={`glass-dark text-charcoal w-56 shrink-0 ${
         open ? 'block' : 'hidden'
       } md:block`}
     >
@@ -61,8 +70,8 @@ export default function Sidebar({ open }) {
             className={({ isActive }) =>
               `flex items-center gap-3 px-3 py-2.5 text-sm rounded-lg transition-colors ${
                 isActive
-                  ? 'bg-primary/80 border-l-4 border-cyan'
-                  : 'border-l-4 border-transparent hover:bg-white/10'
+                  ? 'bg-primary text-white border-l-4 border-cyan'
+                  : 'border-l-4 border-transparent text-muted hover:bg-white/10 hover:text-charcoal'
               }`
             }
           >

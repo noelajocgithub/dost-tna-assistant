@@ -9,7 +9,7 @@ export default function Dashboard() {
 
   if (role === 'regional_evaluator' || role === 'tna_lead')
     return <EvaluatorDashboard />
-  if (role === 'admin') return <AdminDashboard />
+  if (role === 'admin' || role === 'regional_director') return <AdminDashboard />
   // enterprise, provincial_staff, provincial_director
   return <SubmitterDashboard />
 }

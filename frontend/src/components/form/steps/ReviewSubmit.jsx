@@ -3,6 +3,7 @@ import { Check, AlertTriangle, ChevronDown, ChevronRight } from 'lucide-react'
 import { STEPS } from './index'
 import { Input } from '../../ui/Input'
 import Button from '../../ui/Button'
+import { humanizeKey } from '../../../utils/labels'
 
 // Returns true if a section has at least one non-empty value.
 function isComplete(data) {
@@ -79,7 +80,7 @@ export default function ReviewSubmit({
                   </p>
                 ) : (
                   Object.entries(data).map(([k, v]) => (
-                    <SummaryRow key={k} label={k} value={v} />
+                    <SummaryRow key={k} label={humanizeKey(k)} value={v} />
                   ))
                 )}
               </div>

@@ -28,7 +28,10 @@ export default function SubmitterDashboard() {
   // Supervisor view = sees forms from others (shows a "Submitted By" column).
   const isProvincialStaff =
     role === 'provincial_staff' || role === 'provincial_director'
-  const canCreate = role === 'enterprise' || role === 'provincial_staff'
+  const canCreate =
+    role === 'enterprise' ||
+    role === 'provincial_staff' ||
+    role === 'provincial_director'
   const isDirector = role === 'provincial_director'
   const [forms, setForms] = useState([])
   const [summary, setSummary] = useState(null)

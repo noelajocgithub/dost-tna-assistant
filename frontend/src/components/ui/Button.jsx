@@ -1,17 +1,17 @@
-// Glass-style button. Rounded, soft shadow, subtle translucency.
+// Dark-first buttons. One dominant accent per view; calm secondary/ghost.
 const VARIANTS = {
   primary:
-    'bg-primary/90 text-white border border-primary/60 hover:bg-primary shadow-lg shadow-primary/20 disabled:opacity-50',
+    'bg-primary text-white border border-primary/40 hover:brightness-110 shadow-sm shadow-primary/30 disabled:opacity-50',
   secondary:
-    'bg-white/50 text-primary border border-white/70 hover:bg-white/70 disabled:opacity-50',
+    'bg-neutral text-charcoal border border-white/10 hover:bg-background disabled:opacity-50',
   accent:
-    'bg-cyan/90 text-white border border-cyan/60 hover:bg-cyan shadow-lg shadow-cyan/20 disabled:opacity-50',
+    'bg-cyan text-[#08131b] border border-cyan/40 hover:brightness-110 disabled:opacity-50',
   danger:
-    'bg-white/40 text-red-600 border border-red-400/70 hover:bg-red-600 hover:text-white disabled:opacity-50',
+    'bg-transparent text-red-400 border border-red-500/50 hover:bg-red-500 hover:text-white disabled:opacity-50',
   success:
-    'bg-green/90 text-white border border-green/60 hover:bg-green shadow-lg shadow-green/20 disabled:opacity-50',
+    'bg-green text-[#08131b] border border-green/40 hover:brightness-110 disabled:opacity-50',
   ghost:
-    'bg-transparent text-charcoal border border-white/60 hover:bg-white/40 disabled:opacity-50',
+    'bg-transparent text-charcoal border border-white/10 hover:bg-white/10 disabled:opacity-50',
 }
 
 export default function Button({

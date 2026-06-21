@@ -42,11 +42,9 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="glass-strong rounded-2xl p-10 w-full max-w-[400px]">
         <div className="mb-8 text-center">
-          <img
-            src="/dost-logo.svg"
-            alt="DOST"
-            className="w-16 h-16 mx-auto mb-3"
-          />
+          <span className="inline-flex items-center justify-center w-16 h-16 mx-auto mb-3 rounded-xl bg-white p-2 shadow-sm">
+            <img src="/dost-logo.svg" alt="DOST" className="w-full h-full" />
+          </span>
           <h1 className="text-2xl font-bold text-primary">
             TNA Collection System
           </h1>
@@ -89,16 +87,6 @@ export default function Login() {
             {loading ? 'Signing in…' : 'Log In'}
           </Button>
         </form>
-
-        <div className="mt-6 border-t border-white/40 pt-4 text-xs text-gray-600">
-          <p className="font-medium mb-1">Demo accounts (password: password)</p>
-          <ul className="space-y-0.5">
-            <li>admin@dost.gov.ph</li>
-            <li>evaluator@dost.gov.ph</li>
-            <li>staff@dost.gov.ph</li>
-            <li>enterprise@dost.gov.ph</li>
-          </ul>
-        </div>
       </div>
     </div>
   )

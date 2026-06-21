@@ -29,7 +29,7 @@ class DashboardController extends Controller
         $user = $request->user();
 
         return response()->json(match ($user->role) {
-            'admin' => $this->admin(),
+            'admin', 'regional_director' => $this->admin(),
             'regional_evaluator', 'tna_lead' => $this->evaluator(),
             'provincial_director' => $this->director($user),
             'provincial_staff' => $this->provincialStaff($user),
@@ -88,18 +88,24 @@ class DashboardController extends Controller
 
     private function director(User $user): array
     {
-        // Scoped to provincial staff in the director's own province.
+        // The director's own forms, plus provincial-staff forms in their province.
         $scope = function () use ($user): Builder {
-            $q = TnaForm::whereHas('submitter', fn ($s) => $s->where('role', 'provincial_staff'));
-
-            return filled($user->province)
-                ? $q->where('province', $user->province)
-                : $q->whereRaw('1 = 0');
+            return TnaForm::where(function ($w) use ($user) {
+                $w->where('submitted_by', $user->id);
+                if (filled($user->province)) {
+                    $w->orWhere(function ($s) use ($user) {
+                        $s->whereHas('submitter', fn ($x) => $x->where('role', 'provincial_staff'))
+                            ->where('province', $user->province);
+                    });
+                }
+            });
         };
 
         $byStatus = $this->statusCounts($scope());
 
+        // "Top provincial staff" excludes the director's own submissions.
         $byStaff = (clone $scope())
+            ->whereHas('submitter', fn ($s) => $s->where('role', 'provincial_staff'))
             ->with('submitter:id,name')
             ->get(['id', 'submitted_by'])
             ->groupBy('submitted_by')

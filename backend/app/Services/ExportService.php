@@ -33,12 +33,27 @@ class ExportService
         ];
     }
 
+    // Words that need specific capitalization instead of plain Title Case.
+    private const ACRONYMS = [
+        'Pwd' => 'PWD', 'Pwds' => 'PWDs', 'Gmp' => 'GMP',
+        'Haccp' => 'HACCP', 'Php' => 'PHP', 'Id' => 'ID',
+    ];
+
+    /** Display-only label for a snake_case key (matches the web UI). */
+    private function humanizeLabel(string $key): string
+    {
+        $words = explode(' ', ucwords(str_replace('_', ' ', $key)));
+        $words = array_map(fn ($w) => self::ACRONYMS[$w] ?? $w, $words);
+
+        return implode(' ', $words);
+    }
+
     /** Turn a section data array into [label => printable string] pairs. */
     private function flatten(array $data): array
     {
         $out = [];
         foreach ($data as $key => $value) {
-            $label = ucwords(str_replace('_', ' ', (string) $key));
+            $label = $this->humanizeLabel((string) $key);
             if (is_array($value)) {
                 if ($value === []) {
                     continue;

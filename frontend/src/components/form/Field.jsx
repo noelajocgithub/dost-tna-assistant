@@ -102,8 +102,8 @@ export function RadioGroup({ label, name, value, onChange, options }) {
               onClick={() => onChange(name, val)}
               className={`text-sm px-3 py-1.5 border rounded-lg transition-colors ${
                 active
-                  ? 'bg-primary/90 text-white border-primary/60 shadow shadow-primary/20'
-                  : 'bg-white/40 text-charcoal border-white/60 hover:bg-white/60'
+                  ? 'bg-primary text-white border-primary/40 shadow shadow-primary/20'
+                  : 'bg-white/5 text-charcoal border-white/15 hover:bg-white/10'
               }`}
             >
               {text}

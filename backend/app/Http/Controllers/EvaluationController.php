@@ -13,8 +13,13 @@ class EvaluationController extends Controller
     /** List all submitted forms for the evaluation queue (filterable). */
     public function index(Request $request): JsonResponse
     {
+        // The regional director oversees everything, including drafts.
+        $statuses = $request->user()->role === 'regional_director'
+            ? ['draft', 'submitted', 'under_review', 'validated', 'returned']
+            : ['submitted', 'under_review', 'validated', 'returned'];
+
         $query = TnaForm::with('submitter:id,name,email')
-            ->whereIn('status', ['submitted', 'under_review', 'validated', 'returned']);
+            ->whereIn('status', $statuses);
 
         if ($request->filled('status')) {
             $query->where('status', $request->string('status'));
@@ -39,8 +44,11 @@ class EvaluationController extends Controller
     public function show(Request $request, TnaForm $form): JsonResponse
     {
         // First open of a submitted form moves it to "under review"
-        // (skipped when merely viewing).
-        if ($form->status === 'submitted' && $request->query('mode') !== 'view') {
+        // (skipped when merely viewing, and only for actual evaluators —
+        // the regional director's read-only views never change status).
+        if ($form->status === 'submitted'
+            && $request->query('mode') !== 'view'
+            && in_array($request->user()->role, ['regional_evaluator', 'tna_lead'], true)) {
             $form->update(['status' => 'under_review']);
         }
 
@@ -75,6 +83,8 @@ class EvaluationController extends Controller
     /** Add/update a per-section comment + decision. */
     public function comment(Request $request, TnaForm $form): JsonResponse
     {
+        abort_if($request->user()->role === 'regional_director', 403, 'Read-only access.');
+
         $valid = $request->validate([
             'section_key' => ['required', 'string', 'in:' . implode(',', array_keys(config('tna.sections')))],
             'comment' => ['nullable', 'string'],
@@ -112,6 +122,8 @@ class EvaluationController extends Controller
      */
     public function overall(Request $request, TnaForm $form): JsonResponse
     {
+        abort_if($request->user()->role === 'regional_director', 403, 'Read-only access.');
+
         $valid = $request->validate([
             'action' => ['required', 'in:' . implode(',', array_keys(config('tna.evaluation_actions')))],
             'comment' => ['nullable', 'string'],

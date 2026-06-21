@@ -23,6 +23,7 @@ return [
         'provincial_director',
         'regional_evaluator',
         'tna_lead',
+        'regional_director',
         'admin',
     ],
 
@@ -35,6 +36,16 @@ return [
         'PSTO-SDS',
         'PSTO-PDI',
         'INTERC',
+    ],
+
+    // Provinces of the Caraga Region (Region XIII). Used for the user
+    // Province dropdown; a Provincial Director is scoped to one of these.
+    'provinces' => [
+        'Agusan del Norte',
+        'Agusan del Sur',
+        'Surigao del Norte',
+        'Surigao del Sur',
+        'Dinagat Islands',
     ],
 
     // Evaluator decision options (per-section and overall).

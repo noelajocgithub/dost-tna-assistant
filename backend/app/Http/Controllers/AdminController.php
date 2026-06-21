@@ -33,7 +33,7 @@ class AdminController extends Controller
             'email' => ['required', 'email', 'unique:users,email'],
             'password' => ['required', 'string', Password::min(8)->letters()->numbers()],
             'role' => ['required', Rule::in(config('tna.roles'))],
-            'province' => ['nullable', 'string', 'max:255'],
+            'province' => ['nullable', Rule::in(config('tna.provinces'))],
             'unit' => ['nullable', Rule::in(config('tna.units'))],
         ]);
 
@@ -58,7 +58,7 @@ class AdminController extends Controller
             'email' => ['sometimes', 'email', Rule::unique('users', 'email')->ignore($user->id)],
             'password' => ['nullable', 'string', Password::min(8)->letters()->numbers()],
             'role' => ['sometimes', Rule::in(config('tna.roles'))],
-            'province' => ['nullable', 'string', 'max:255'],
+            'province' => ['nullable', Rule::in(config('tna.provinces'))],
             'unit' => ['nullable', Rule::in(config('tna.units'))],
             'is_active' => ['sometimes', 'boolean'],
         ]);

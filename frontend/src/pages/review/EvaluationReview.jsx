@@ -3,8 +3,10 @@ import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import { ChevronDown, ChevronRight, Check } from 'lucide-react'
 import { evaluationsApi } from '../../api/evaluations'
 import { aiApi } from '../../api/ai'
+import { useAuthStore } from '../../store/authStore'
 import { EVALUATION_ACTIONS, ACTION_BY_VALUE } from '../../constants/evaluation'
 import { formatDate } from '../../utils/format'
+import { humanizeKey } from '../../utils/labels'
 import Card from '../../components/ui/Card'
 import Button from '../../components/ui/Button'
 import { Textarea } from '../../components/ui/Input'
@@ -24,7 +26,7 @@ function SectionValues({ data }) {
       {entries.map(([k, v]) =>
         Array.isArray(v) ? (
           <div key={k}>
-            <p className="text-xs text-gray-500 uppercase mb-1">{k}</p>
+            <p className="text-xs text-gray-500 mb-1">{humanizeKey(k)}</p>
             {v.length === 0 ? (
               <p className="text-sm text-gray-400 italic">empty</p>
             ) : (
@@ -47,7 +49,7 @@ function SectionValues({ data }) {
           </div>
         ) : (
           <div key={k} className="grid grid-cols-3 gap-2 text-sm border-b border-white/30 py-1">
-            <span className="text-gray-500">{k}</span>
+            <span className="text-gray-500">{humanizeKey(k)}</span>
             <span className="col-span-2 text-charcoal whitespace-pre-wrap break-words">
               {String(v)}
             </span>
@@ -91,7 +93,9 @@ export default function EvaluationReview() {
   // Edit mode is explicit (?mode=edit); anything else is read-only.
   // In edit mode the evaluator can change comments/decisions even after the
   // form has been validated or returned.
-  const editMode = searchParams.get('mode') === 'edit'
+  // The regional director can only ever view (never evaluate).
+  const isOverseer = useAuthStore((s) => s.user?.role) === 'regional_director'
+  const editMode = searchParams.get('mode') === 'edit' && !isOverseer
   const readOnly = !editMode
 
   const [data, setData] = useState(null)

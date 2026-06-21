@@ -6,7 +6,7 @@ import Button from '../../components/ui/Button'
 import Modal from '../../components/ui/Modal'
 import { Input, Select } from '../../components/ui/Input'
 import { RoleBadge } from '../../components/ui/Badge'
-import { ROLES, UNITS } from '../../constants/org'
+import { ROLES, UNITS, PROVINCES } from '../../constants/org'
 
 const EMPTY = {
   name: '',
@@ -198,11 +198,18 @@ export default function UserManagement() {
               </option>
             ))}
           </Select>
-          <Input
+          <Select
             label="Province"
             value={form.province || ''}
             onChange={(e) => set('province', e.target.value)}
-          />
+          >
+            <option value="">— None —</option>
+            {PROVINCES.map((p) => (
+              <option key={p} value={p}>
+                {p}
+              </option>
+            ))}
+          </Select>
         </div>
       </Modal>
     </div>

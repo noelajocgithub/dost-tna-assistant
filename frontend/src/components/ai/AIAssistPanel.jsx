@@ -18,7 +18,7 @@ export default function AIAssistPanel({
 
   return (
     <div className="fixed inset-0 z-40 flex justify-end">
-      <div className="flex-1 bg-charcoal/30 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
+      <div className="flex-1 bg-black/50 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
       <aside className="w-80 max-w-full glass-strong h-full flex flex-col">
         <div className="flex items-center justify-between border-b border-white/40 px-4 py-3">
           <h3 className="text-sm font-semibold text-charcoal">AI Suggestion</h3>

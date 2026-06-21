@@ -5,6 +5,7 @@ export const ROLES = [
   { value: 'provincial_director', label: 'Provincial Director' },
   { value: 'regional_evaluator', label: 'Regional Evaluator' },
   { value: 'tna_lead', label: 'TNA Lead' },
+  { value: 'regional_director', label: 'Regional Director' },
   { value: 'admin', label: 'Admin' },
 ]
 
@@ -20,4 +21,13 @@ export const UNITS = [
   'PSTO-SDS',
   'PSTO-PDI',
   'INTERC',
+]
+
+// Provinces of the Caraga Region (Region XIII). Must match config/tna.php `provinces`.
+export const PROVINCES = [
+  'Agusan del Norte',
+  'Agusan del Sur',
+  'Surigao del Norte',
+  'Surigao del Sur',
+  'Dinagat Islands',
 ]

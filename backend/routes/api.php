@@ -52,16 +52,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/ai/prompts', [AIController::class, 'promptMap'])
         ->middleware('role:enterprise,provincial_staff,provincial_director,regional_evaluator,tna_lead');
 
-    // Evaluation (regional evaluators + TNA lead)
-    Route::middleware('role:regional_evaluator,tna_lead')->group(function () {
+    // Evaluation (regional evaluators + TNA lead; regional director views read-only)
+    Route::middleware('role:regional_evaluator,tna_lead,regional_director')->group(function () {
         Route::get('/evaluations', [EvaluationController::class, 'index']);
         Route::get('/evaluations/{form}', [EvaluationController::class, 'show']);
         Route::post('/evaluations/{form}/comment', [EvaluationController::class, 'comment']);
         Route::post('/evaluations/{form}/overall', [EvaluationController::class, 'overall']);
     });
 
-    // Admin
-    Route::middleware('role:admin')->prefix('admin')->group(function () {
+    // Admin (regional director has full admin parity)
+    Route::middleware('role:admin,regional_director')->prefix('admin')->group(function () {
         Route::get('/users', [AdminController::class, 'listUsers']);
         Route::post('/users', [AdminController::class, 'createUser']);
         Route::put('/users/{user}', [AdminController::class, 'updateUser']);
