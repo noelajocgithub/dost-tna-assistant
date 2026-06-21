@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import DictateButton from '../ai/DictateButton'
 
 // Lightweight controlled fields that bind to a section-data object.
 // Each takes `value` + `onChange(name, value)` so step components stay concise.
@@ -22,7 +23,17 @@ export function TextField({ label, name, value, onChange, type = 'text', ...rest
   )
 }
 
-export function TextAreaField({ label, name, value, onChange, rows = 4, header, ...rest }) {
+export function TextAreaField({
+  label,
+  name,
+  value,
+  onChange,
+  rows = 4,
+  header,
+  dictate = true,
+  ...rest
+}) {
+  const current = value?.[name] ?? ''
   return (
     <div className="w-full">
       <div className="flex items-center justify-between mb-1">
@@ -31,7 +42,16 @@ export function TextAreaField({ label, name, value, onChange, rows = 4, header, 
             {label}
           </label>
         )}
-        {header}
+        <div className="flex items-center gap-1">
+          {dictate && (
+            <DictateButton
+              onResult={(text) =>
+                onChange(name, current ? `${current} ${text}`.trim() : text)
+              }
+            />
+          )}
+          {header}
+        </div>
       </div>
       <textarea
         rows={rows}
