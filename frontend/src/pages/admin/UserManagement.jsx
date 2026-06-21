@@ -97,11 +97,11 @@ export default function UserManagement() {
 
       <Card>
         {loading ? (
-          <div className="p-6 text-sm text-gray-500">Loading…</div>
+          <div className="p-6 text-sm text-muted">Loading…</div>
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-neutral text-left text-xs text-gray-500 uppercase">
+              <tr className="border-b border-neutral text-left text-xs text-muted uppercase">
                 <th className="px-4 py-3 font-medium">Name</th>
                 <th className="px-4 py-3 font-medium">Email</th>
                 <th className="px-4 py-3 font-medium">Role</th>
@@ -115,15 +115,15 @@ export default function UserManagement() {
               {users.map((u) => (
                 <tr key={u.id} className="border-b border-neutral hover:bg-neutral">
                   <td className="px-4 py-3 text-charcoal">{u.name}</td>
-                  <td className="px-4 py-3 text-gray-600">{u.email}</td>
+                  <td className="px-4 py-3 text-muted">{u.email}</td>
                   <td className="px-4 py-3">
                     <RoleBadge role={u.role} />
                   </td>
-                  <td className="px-4 py-3 text-gray-600">{u.unit || '—'}</td>
-                  <td className="px-4 py-3 text-gray-600">{u.province || '—'}</td>
+                  <td className="px-4 py-3 text-muted">{u.unit || '—'}</td>
+                  <td className="px-4 py-3 text-muted">{u.province || '—'}</td>
                   <td className="px-4 py-3">
                     <span
-                      className={`text-xs ${u.is_active ? 'text-green' : 'text-red-600'}`}
+                      className={`text-xs ${u.is_active ? 'text-green' : 'text-red-500'}`}
                     >
                       {u.is_active ? 'Active' : 'Inactive'}
                     </span>
@@ -166,7 +166,7 @@ export default function UserManagement() {
       >
         <div className="space-y-4">
           {error && (
-            <div className="border border-red-300 bg-red-50 text-red-700 text-sm px-3 py-2">
+            <div className="border border-red-500/40 bg-red-500/10 text-red-500 text-sm px-3 py-2">
               {error}
             </div>
           )}

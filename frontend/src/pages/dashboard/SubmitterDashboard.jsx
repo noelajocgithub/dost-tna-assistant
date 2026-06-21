@@ -162,7 +162,7 @@ export default function SubmitterDashboard() {
           </div>
 
           <Card className="p-4">
-            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">
+            <p className="text-xs font-medium text-muted uppercase tracking-wide mb-3">
               Status Breakdown
             </p>
             <StatusBreakdown byStatus={summary.stats.by_status} />
@@ -170,7 +170,7 @@ export default function SubmitterDashboard() {
 
           {isDirector && summary.extra?.by_staff?.length > 0 && (
             <Card className="p-4">
-              <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">
+              <p className="text-xs font-medium text-muted uppercase tracking-wide mb-3">
                 Top Provincial Staff by Submissions
               </p>
               <div className="space-y-2">
@@ -193,18 +193,18 @@ export default function SubmitterDashboard() {
 
       <Card>
         {loading ? (
-          <div className="p-6 text-sm text-gray-500">Loading…</div>
+          <div className="p-6 text-sm text-muted">Loading…</div>
         ) : forms.length === 0 ? (
           <div className="p-12 text-center">
             <FileText
               size={40}
               strokeWidth={1.5}
-              className="mx-auto text-gray-400 mb-3"
+              className="mx-auto text-muted mb-3"
             />
             <p className="text-sm text-charcoal font-medium">No forms yet.</p>
             {canCreate && (
               <>
-                <p className="text-sm text-gray-500 mb-4">
+                <p className="text-sm text-muted mb-4">
                   Start your first Technology Needs Assessment.
                 </p>
                 <Button onClick={() => setModalOpen(true)}>
@@ -216,7 +216,7 @@ export default function SubmitterDashboard() {
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-neutral text-left text-xs text-gray-500 uppercase">
+              <tr className="border-b border-neutral text-left text-xs text-muted uppercase">
                 <th className="px-4 py-3 font-medium">Enterprise Name</th>
                 {isProvincialStaff && (
                   <th className="px-4 py-3 font-medium">Submitted By</th>
@@ -235,11 +235,11 @@ export default function SubmitterDashboard() {
                 >
                   <td className="px-4 py-3 text-charcoal">
                     {f.enterprise_name || (
-                      <span className="text-gray-400 italic">Untitled draft</span>
+                      <span className="text-muted italic">Untitled draft</span>
                     )}
                   </td>
                   {isProvincialStaff && (
-                    <td className="px-4 py-3 text-gray-600">
+                    <td className="px-4 py-3 text-muted">
                       {f.submitted_by}
                       {f.is_own && (
                         <span className="ml-1 text-xs text-cyan">(you)</span>
@@ -249,7 +249,7 @@ export default function SubmitterDashboard() {
                   <td className="px-4 py-3">
                     <StatusBadge status={f.status} />
                   </td>
-                  <td className="px-4 py-3 text-gray-500">
+                  <td className="px-4 py-3 text-muted">
                     {formatDate(f.updated_at)}
                   </td>
                   <td className="px-4 py-3 text-right whitespace-nowrap">
@@ -280,7 +280,7 @@ export default function SubmitterDashboard() {
                         </span>
                         <button
                           onClick={(e) => cancelDeletion(e, f)}
-                          className="text-xs text-gray-500 underline hover:text-charcoal"
+                          className="text-xs text-muted underline hover:text-charcoal"
                         >
                           Cancel
                         </button>
@@ -289,7 +289,7 @@ export default function SubmitterDashboard() {
                       <button
                         onClick={(e) => openDelete(e, f)}
                         title="Request deletion"
-                        className="text-red-600 border border-red-300 px-2 py-1 rounded-lg hover:bg-red-600 hover:text-white"
+                        className="text-red-500 border border-red-500/40 px-2 py-1 rounded-lg hover:bg-red-600 hover:text-white"
                       >
                         <Trash2 size={14} strokeWidth={1.5} />
                       </button>
@@ -324,7 +324,7 @@ export default function SubmitterDashboard() {
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        <p className="text-xs text-gray-500 mt-2">
+        <p className="text-xs text-muted mt-2">
           You can change this later. A draft will be created and you'll continue
           to the form wizard.
         </p>

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\TnaForm;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
 
@@ -12,7 +13,7 @@ class ExportService
     /** Assemble a normalized view-model for a form. */
     public function assemble(TnaForm $form): array
     {
-        $form->loadMissing(['sections', 'submitter:id,name']);
+        $form->loadMissing(['sections', 'submitter:id,name', 'attachments']);
         $titles = config('tna.sections');
         $sections = $form->sections->keyBy('section_key');
 
@@ -30,7 +31,37 @@ class ExportService
             'province' => $form->province,
             'submitted_by' => $form->submitter?->name,
             'sections' => $data,
+            'images' => $this->images($form),
         ];
+    }
+
+    private const IMAGE_LABELS = [
+        'org_chart' => 'Organizational Structure',
+        'plant_layout' => 'Plant Layout',
+        'process_flow' => 'Process Flow',
+        'other' => 'Attachment',
+    ];
+
+    /** Resolve image attachments to absolute paths + base64 data URIs. */
+    private function images(TnaForm $form): array
+    {
+        return $form->attachments
+            ->map(function ($a) {
+                $abs = Storage::disk('local')->path($a->file_path);
+                if (! is_file($abs)) {
+                    return null;
+                }
+                $mime = $a->mime_type ?: 'image/png';
+
+                return [
+                    'label' => self::IMAGE_LABELS[$a->type] ?? ucfirst($a->type),
+                    'path' => $abs,
+                    'data_uri' => 'data:' . $mime . ';base64,' . base64_encode((string) file_get_contents($abs)),
+                ];
+            })
+            ->filter()
+            ->values()
+            ->all();
     }
 
     // Words that need specific capitalization instead of plain Title Case.
@@ -117,6 +148,15 @@ class ExportService
                 }
             }
             $section->addTextBreak(1);
+        }
+
+        if (! empty($model['images'])) {
+            $section->addTitle('Attachments', 2);
+            foreach ($model['images'] as $img) {
+                $section->addText($img['label'], ['bold' => true]);
+                $section->addImage($img['path'], ['width' => 360, 'alignment' => 'left']);
+                $section->addTextBreak(1);
+            }
         }
 
         $path = tempnam(sys_get_temp_dir(), 'tna_') . '.docx';

@@ -19,18 +19,18 @@ import AIAssistPanel from '../../components/ai/AIAssistPanel'
 function SectionValues({ data }) {
   const entries = Object.entries(data || {})
   if (entries.length === 0) {
-    return <p className="text-sm text-gray-500 italic">No data entered.</p>
+    return <p className="text-sm text-muted italic">No data entered.</p>
   }
   return (
     <div className="space-y-2">
       {entries.map(([k, v]) =>
         Array.isArray(v) ? (
           <div key={k}>
-            <p className="text-xs text-gray-500 mb-1">{humanizeKey(k)}</p>
+            <p className="text-xs text-muted mb-1">{humanizeKey(k)}</p>
             {v.length === 0 ? (
-              <p className="text-sm text-gray-400 italic">empty</p>
+              <p className="text-sm text-muted italic">empty</p>
             ) : (
-              <div className="border border-white/40 overflow-x-auto rounded-lg">
+              <div className="border border-white/10 overflow-x-auto rounded-lg">
                 <table className="w-full text-sm">
                   <tbody>
                     {v.map((row, i) => (
@@ -49,7 +49,7 @@ function SectionValues({ data }) {
           </div>
         ) : (
           <div key={k} className="grid grid-cols-3 gap-2 text-sm border-b border-white/30 py-1">
-            <span className="text-gray-500">{humanizeKey(k)}</span>
+            <span className="text-muted">{humanizeKey(k)}</span>
             <span className="col-span-2 text-charcoal whitespace-pre-wrap break-words">
               {String(v)}
             </span>
@@ -75,7 +75,7 @@ function DecisionButtons({ value, onSelect, disabled }) {
             className={`text-sm px-3 py-1.5 border rounded-lg transition-colors disabled:opacity-50 ${
               active
                 ? a.selected
-                : `bg-white/40 text-charcoal ${a.border} ${a.hover}`
+                : `bg-white/10 text-charcoal ${a.border} ${a.hover}`
             }`}
           >
             {a.label}
@@ -220,8 +220,8 @@ export default function EvaluationReview() {
     setAi((a) => ({ ...a, open: false }))
   }
 
-  if (loading) return <div className="text-sm text-gray-600">Loading…</div>
-  if (!data) return <div className="text-sm text-red-600">Form not found.</div>
+  if (loading) return <div className="text-sm text-muted">Loading…</div>
+  if (!data) return <div className="text-sm text-red-500">Form not found.</div>
 
   const { form, sections, section_keys, section_titles } = data
 
@@ -240,7 +240,7 @@ export default function EvaluationReview() {
             <h1 className="text-2xl font-bold text-charcoal">
               {form.enterprise_name || 'Untitled'}
             </h1>
-            <p className="text-sm text-gray-600 mt-1">
+            <p className="text-sm text-muted mt-1">
               {form.province} · Submitted by {form.submitted_by} ·{' '}
               {formatDate(form.submitted_at)}
             </p>
@@ -249,7 +249,7 @@ export default function EvaluationReview() {
             <span
               className={`text-xs font-medium px-2.5 py-0.5 rounded-full border ${
                 readOnly
-                  ? 'bg-white/40 text-charcoal border-white/60'
+                  ? 'bg-white/10 text-charcoal border-white/15'
                   : 'bg-cyan text-white border-cyan'
               }`}
             >
@@ -270,7 +270,7 @@ export default function EvaluationReview() {
             <button
               type="button"
               onClick={() => setOpen((o) => ({ ...o, [key]: !o[key] }))}
-              className="w-full flex items-center justify-between px-6 py-4 hover:bg-white/30 rounded-t-2xl"
+              className="w-full flex items-center justify-between px-6 py-4 hover:bg-white/5 rounded-t-2xl"
             >
               <span className="flex items-center gap-2 text-sm font-semibold text-charcoal">
                 {isOpen ? (
@@ -341,16 +341,16 @@ export default function EvaluationReview() {
             Overall Evaluation
           </h2>
         </div>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-muted">
           Record the overall decision for this TNA. Approving endorses the form;
           requesting clarification or marking non-compliant returns it to the
           submitter.
         </p>
 
         {readOnly ? (
-          <div className="border border-white/40 rounded-lg p-4 bg-white/30">
+          <div className="border border-white/10 rounded-lg p-4 bg-white/5">
             <p className="text-sm">
-              <span className="text-gray-500">Decision: </span>
+              <span className="text-muted">Decision: </span>
               <span className={`font-medium ${ACTION_BY_VALUE[form.overall_action]?.text || 'text-charcoal'}`}>
                 {ACTION_BY_VALUE[form.overall_action]?.label || 'Not yet evaluated'}
               </span>

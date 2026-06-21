@@ -48,13 +48,13 @@ export default function Login() {
           <h1 className="text-2xl font-bold text-primary">
             TNA Collection System
           </h1>
-          <p className="text-xs text-gray-600 mt-1">
+          <p className="text-xs text-muted mt-1">
             Technology Needs Assessment — Form 01
           </p>
         </div>
 
         {serverError && (
-          <div className="mb-4 border border-red-300 bg-red-50/80 text-red-700 text-sm px-3 py-2 rounded-lg">
+          <div className="mb-4 border border-red-500/40 bg-red-500/10 text-red-500 text-sm px-3 py-2 rounded-lg">
             {serverError}
           </div>
         )}

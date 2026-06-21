@@ -9,14 +9,14 @@ import { Select } from '../../components/ui/Input'
 // Friendly labels + accent colors per action family.
 const ACTION_META = {
   'auth.login': { label: 'Login', cls: 'text-cyan' },
-  'auth.logout': { label: 'Logout', cls: 'text-gray-500' },
+  'auth.logout': { label: 'Logout', cls: 'text-muted' },
   'form.create': { label: 'Form Created', cls: 'text-primary' },
   'form.section_save': { label: 'Section Saved', cls: 'text-charcoal' },
   'form.submit': { label: 'Form Submitted', cls: 'text-cyan' },
   'form.deletion_request': { label: 'Deletion Requested', cls: 'text-yellow' },
-  'form.deletion_cancel': { label: 'Deletion Cancelled', cls: 'text-gray-500' },
-  'form.deletion_approve': { label: 'Deletion Approved', cls: 'text-red-600' },
-  'form.deletion_reject': { label: 'Deletion Rejected', cls: 'text-gray-500' },
+  'form.deletion_cancel': { label: 'Deletion Cancelled', cls: 'text-muted' },
+  'form.deletion_approve': { label: 'Deletion Approved', cls: 'text-red-500' },
+  'form.deletion_reject': { label: 'Deletion Rejected', cls: 'text-muted' },
   'evaluation.comment': { label: 'Section Decision', cls: 'text-charcoal' },
   'evaluation.overall': { label: 'Overall Evaluation', cls: 'text-green' },
   'ai.assist': { label: 'AI Assist', cls: 'text-cyan' },
@@ -70,13 +70,13 @@ export default function AuditLog() {
 
       <Card>
         {loading ? (
-          <div className="p-6 text-sm text-gray-500">Loading…</div>
+          <div className="p-6 text-sm text-muted">Loading…</div>
         ) : rows.length === 0 ? (
           <div className="p-12 text-center">
             <ScrollText
               size={40}
               strokeWidth={1.5}
-              className="mx-auto text-gray-400 mb-3"
+              className="mx-auto text-muted mb-3"
             />
             <p className="text-sm text-charcoal font-medium">
               No activity recorded yet.
@@ -85,7 +85,7 @@ export default function AuditLog() {
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-neutral text-left text-xs text-gray-500 uppercase">
+              <tr className="border-b border-neutral text-left text-xs text-muted uppercase">
                 <th className="px-4 py-3 font-medium">When</th>
                 <th className="px-4 py-3 font-medium">User</th>
                 <th className="px-4 py-3 font-medium">Activity</th>
@@ -101,7 +101,7 @@ export default function AuditLog() {
                 }
                 return (
                   <tr key={r.id} className="border-b border-neutral hover:bg-neutral">
-                    <td className="px-4 py-3 text-gray-500 whitespace-nowrap">
+                    <td className="px-4 py-3 text-muted whitespace-nowrap">
                       {formatDateTime(r.created_at)}
                     </td>
                     <td className="px-4 py-3 text-charcoal">
@@ -110,8 +110,8 @@ export default function AuditLog() {
                     <td className={`px-4 py-3 font-medium ${meta.cls}`}>
                       {meta.label}
                     </td>
-                    <td className="px-4 py-3 text-gray-600">{r.description}</td>
-                    <td className="px-4 py-3 text-gray-400 text-xs">{r.ip}</td>
+                    <td className="px-4 py-3 text-muted">{r.description}</td>
+                    <td className="px-4 py-3 text-muted text-xs">{r.ip}</td>
                   </tr>
                 )
               })}

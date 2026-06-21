@@ -99,10 +99,10 @@ export default function ImageUploadField({
           <img
             src={preview}
             alt={attachment?.original_name || 'Organizational structure'}
-            className="max-h-64 w-auto self-start rounded-md border border-white/60"
+            className="max-h-64 w-auto self-start rounded-md border border-white/15"
           />
           <div className="flex items-center justify-between gap-2">
-            <span className="text-xs text-gray-500 truncate">
+            <span className="text-xs text-muted truncate">
               {attachment?.original_name}
             </span>
             {!disabled && (
@@ -111,7 +111,7 @@ export default function ImageUploadField({
                   type="button"
                   onClick={() => inputRef.current?.click()}
                   disabled={busy}
-                  className="text-xs px-2.5 py-1 rounded-lg border border-white/60 bg-white/40 text-charcoal hover:bg-white/60 disabled:opacity-50"
+                  className="text-xs px-2.5 py-1 rounded-lg border border-white/15 bg-white/10 text-charcoal hover:bg-white/10 disabled:opacity-50"
                 >
                   Replace
                 </button>
@@ -119,7 +119,7 @@ export default function ImageUploadField({
                   type="button"
                   onClick={handleRemove}
                   disabled={busy}
-                  className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-lg border border-red-200 bg-red-50 text-red-600 hover:bg-red-100 disabled:opacity-50"
+                  className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-lg border border-red-500/40 bg-red-500/10 text-red-500 hover:bg-red-500/15 disabled:opacity-50"
                 >
                   <X size={13} strokeWidth={1.5} /> Remove
                 </button>
@@ -132,7 +132,7 @@ export default function ImageUploadField({
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={disabled || busy}
-          className="glass-input w-full rounded-lg px-3 py-8 flex flex-col items-center justify-center gap-2 text-gray-500 hover:text-charcoal disabled:opacity-50"
+          className="glass-input w-full rounded-lg px-3 py-8 flex flex-col items-center justify-center gap-2 text-muted hover:text-charcoal disabled:opacity-50"
         >
           {busy ? (
             <span className="text-sm">Uploading…</span>
@@ -142,13 +142,13 @@ export default function ImageUploadField({
                 {disabled ? <ImageIcon size={18} strokeWidth={1.5} /> : <Upload size={18} strokeWidth={1.5} />}
                 {disabled ? 'No image uploaded' : 'Click to upload an image'}
               </span>
-              {!disabled && <span className="text-xs text-gray-400">PNG or JPG, up to 5 MB</span>}
+              {!disabled && <span className="text-xs text-muted">PNG or JPG, up to 5 MB</span>}
             </>
           )}
         </button>
       )}
 
-      {error && <p className="text-xs text-red-600 mt-1">{error}</p>}
+      {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
     </div>
   )
 }

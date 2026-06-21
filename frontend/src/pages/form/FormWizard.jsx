@@ -244,8 +244,8 @@ export default function FormWizard() {
     }
   }
 
-  if (loading) return <div className="text-sm text-gray-500">Loading…</div>
-  if (notFound) return <div className="text-sm text-red-600">Form not found.</div>
+  if (loading) return <div className="text-sm text-muted">Loading…</div>
+  if (notFound) return <div className="text-sm text-red-500">Form not found.</div>
 
   const onReview = step === REVIEW_INDEX
   const totalSteps = STEPS.length + 1
@@ -275,7 +275,7 @@ export default function FormWizard() {
       </div>
 
       {status === 'returned' && returnReason && (
-        <div className="border border-red-300 bg-red-50 text-red-700 text-sm px-4 py-3">
+        <div className="border border-red-500/40 bg-red-500/10 text-red-500 text-sm px-4 py-3">
           <span className="font-medium">Returned by evaluator:</span> {returnReason}
         </div>
       )}
@@ -287,7 +287,7 @@ export default function FormWizard() {
             Step {step + 1} of {totalSteps} —{' '}
             {onReview ? 'Review & Submit' : active.title}
           </span>
-          <span className="text-gray-500">{progress}%</span>
+          <span className="text-muted">{progress}%</span>
         </div>
         <div className="w-full bg-neutral h-1.5">
           <div
@@ -312,7 +312,7 @@ export default function FormWizard() {
                   ? 'border-b-2 border-primary text-primary font-medium'
                   : done
                     ? 'text-charcoal'
-                    : 'text-gray-400'
+                    : 'text-muted'
               }`}
             >
               {done && <Check size={13} strokeWidth={2} className="text-green" />}
@@ -325,7 +325,7 @@ export default function FormWizard() {
           className={`text-sm py-1.5 ${
             onReview
               ? 'border-b-2 border-primary text-primary font-medium'
-              : 'text-gray-400'
+              : 'text-muted'
           }`}
         >
           Review
@@ -341,11 +341,11 @@ export default function FormWizard() {
         </div>
         <p className="text-xs mb-6">
           {!editable ? (
-            <span className="text-gray-500">Read-only ({status.replace('_', ' ')})</span>
+            <span className="text-muted">Read-only ({status.replace('_', ' ')})</span>
           ) : saveState === 'saving' ? (
             <span className="text-cyan">Saving…</span>
           ) : saveState === 'error' ? (
-            <span className="text-red-600">⚠ Save failed</span>
+            <span className="text-red-500">⚠ Save failed</span>
           ) : (
             <span className="text-green">
               ✓ Saved{lastSaved ? ` · ${formatDateTime(lastSaved)}` : ''}

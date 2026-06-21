@@ -48,7 +48,7 @@ export default function StatCard({
 
 // Compact row of status counts reusing the status palette.
 const STATUS_META = {
-  draft: { label: 'Draft', dot: 'bg-white/40' },
+  draft: { label: 'Draft', dot: 'bg-white/10' },
   submitted: { label: 'Submitted', dot: 'bg-cyan' },
   under_review: { label: 'Under Review', dot: 'bg-yellow' },
   validated: { label: 'Validated', dot: 'bg-green' },

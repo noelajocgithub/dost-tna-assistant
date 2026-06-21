@@ -18,7 +18,7 @@ function SummaryRow({ label, value }) {
   if (value === '' || value == null) return null
   return (
     <div className="grid grid-cols-3 gap-2 py-1 border-b border-neutral text-sm">
-      <span className="text-gray-500">{label}</span>
+      <span className="text-muted">{label}</span>
       <span className="col-span-2 text-charcoal whitespace-pre-wrap break-words">
         {Array.isArray(value) ? `${value.length} row(s)` : String(value)}
       </span>
@@ -39,7 +39,7 @@ export default function ReviewSubmit({
 
   return (
     <div className="space-y-4">
-      <p className="text-sm text-gray-500">
+      <p className="text-sm text-muted">
         Review each section below. Green check = has content, yellow = empty.
       </p>
 
@@ -75,7 +75,7 @@ export default function ReviewSubmit({
             {isOpen && (
               <div className="px-4 pb-3 border-t border-neutral">
                 {Object.keys(data).length === 0 ? (
-                  <p className="text-sm text-gray-400 italic py-2">
+                  <p className="text-sm text-muted italic py-2">
                     No data entered.
                   </p>
                 ) : (
@@ -97,7 +97,7 @@ export default function ReviewSubmit({
           onChange={(e) => onSignatureChange(e.target.value)}
         />
         {!enterpriseName && (
-          <p className="text-xs text-red-600">
+          <p className="text-xs text-red-500">
             Enterprise name is required before submitting (set it in Step 1).
           </p>
         )}

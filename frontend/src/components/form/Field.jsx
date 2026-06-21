@@ -148,7 +148,7 @@ function Wrap({ label, error, children }) {
         </label>
       )}
       {children}
-      {error && <p className="text-xs text-red-600 mt-1">{error}</p>}
+      {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
     </div>
   )
 }

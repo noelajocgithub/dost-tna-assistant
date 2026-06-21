@@ -105,13 +105,13 @@ export default function EvaluatorDashboard() {
 
       <Card>
         {loading ? (
-          <div className="p-6 text-sm text-gray-500">Loading…</div>
+          <div className="p-6 text-sm text-muted">Loading…</div>
         ) : forms.length === 0 ? (
           <div className="p-12 text-center">
             <ClipboardCheck
               size={40}
               strokeWidth={1.5}
-              className="mx-auto text-gray-400 mb-3"
+              className="mx-auto text-muted mb-3"
             />
             <p className="text-sm text-charcoal font-medium">
               No forms to review.
@@ -120,7 +120,7 @@ export default function EvaluatorDashboard() {
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-neutral text-left text-xs text-gray-500 uppercase">
+              <tr className="border-b border-neutral text-left text-xs text-muted uppercase">
                 <th className="px-4 py-3 font-medium">Enterprise Name</th>
                 <th className="px-4 py-3 font-medium">Province</th>
                 <th className="px-4 py-3 font-medium">Submitted By</th>
@@ -138,12 +138,12 @@ export default function EvaluatorDashboard() {
                 >
                   <td className="px-4 py-3 text-charcoal">
                     {f.enterprise_name || (
-                      <span className="text-gray-400 italic">Untitled</span>
+                      <span className="text-muted italic">Untitled</span>
                     )}
                   </td>
-                  <td className="px-4 py-3 text-gray-600">{f.province || '—'}</td>
-                  <td className="px-4 py-3 text-gray-600">{f.submitted_by}</td>
-                  <td className="px-4 py-3 text-gray-500">
+                  <td className="px-4 py-3 text-muted">{f.province || '—'}</td>
+                  <td className="px-4 py-3 text-muted">{f.submitted_by}</td>
+                  <td className="px-4 py-3 text-muted">
                     {formatDate(f.submitted_at)}
                   </td>
                   <td className="px-4 py-3">

@@ -61,7 +61,7 @@ function PromptRow({ row, onSaved }) {
       <div className="flex items-center justify-between mb-1">
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium text-charcoal">{row.label}</span>
-          <code className="text-[11px] text-gray-400">{row.key}</code>
+          <code className="text-[11px] text-muted">{row.key}</code>
           {!isDefault && (
             <span className="text-[11px] px-1.5 py-0.5 rounded-full bg-cyan/15 text-cyan border border-cyan/30">
               Customized
@@ -112,7 +112,7 @@ export default function AIPrompts() {
     )
   }
 
-  if (loading) return <div className="text-sm text-gray-500">Loading…</div>
+  if (loading) return <div className="text-sm text-muted">Loading…</div>
 
   const scopes = ['system', 'form', 'evaluation']
 
@@ -120,7 +120,7 @@ export default function AIPrompts() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-charcoal">AI Prompts</h1>
-        <p className="text-sm text-gray-600 mt-1">
+        <p className="text-sm text-muted mt-1">
           Edit the prompts used by AI Assist across the app. Changes apply to all
           users immediately. Users can still tweak a prompt for a single session
           from the AI Suggestion panel.
@@ -135,7 +135,7 @@ export default function AIPrompts() {
             <h2 className="text-lg font-semibold text-charcoal">
               {SCOPE_TITLES[scope]}
             </h2>
-            <p className="text-sm text-gray-500 mt-1 mb-2">{SCOPE_NOTES[scope]}</p>
+            <p className="text-sm text-muted mt-1 mb-2">{SCOPE_NOTES[scope]}</p>
             {group.map((row) => (
               <PromptRow key={row.key} row={row} onSaved={handleSaved} />
             ))}

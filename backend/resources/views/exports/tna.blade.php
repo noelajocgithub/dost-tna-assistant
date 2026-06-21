@@ -39,5 +39,13 @@
             </table>
         @endif
     @endforeach
+
+    @if (!empty($model['images']))
+        <h2>Attachments</h2>
+        @foreach ($model['images'] as $img)
+            <p style="font-weight:bold; margin:8px 0 2px;">{{ $img['label'] }}</p>
+            <img src="{{ $img['data_uri'] }}" style="max-width:100%; max-height:360px; border:1px solid #CCCCCC;">
+        @endforeach
+    @endif
 </body>
 </html>

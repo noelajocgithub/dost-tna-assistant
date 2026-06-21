@@ -24,7 +24,7 @@ export default function App() {
 
   if (!initialized) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-neutral text-sm text-gray-500">
+      <div className="min-h-screen flex items-center justify-center bg-neutral text-sm text-muted">
         Loading…
       </div>
     )

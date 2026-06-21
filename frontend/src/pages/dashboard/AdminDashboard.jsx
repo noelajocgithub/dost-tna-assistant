@@ -45,16 +45,16 @@ export default function AdminDashboard() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-charcoal">Admin Dashboard</h1>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-sm text-muted mt-1">
           Welcome, <span className="font-semibold">{user?.name}</span> — a
           system-wide overview.
         </p>
       </div>
 
       {loading ? (
-        <Card className="p-6 text-sm text-gray-500">Loading…</Card>
+        <Card className="p-6 text-sm text-muted">Loading…</Card>
       ) : !summary ? (
-        <Card className="p-6 text-sm text-gray-500">
+        <Card className="p-6 text-sm text-muted">
           Could not load dashboard data.
         </Card>
       ) : (
@@ -93,13 +93,13 @@ export default function AdminDashboard() {
           {/* Forms by status + AI status */}
           <div className="grid gap-4 lg:grid-cols-3">
             <Card className="p-4 lg:col-span-2">
-              <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">
+              <p className="text-xs font-medium text-muted uppercase tracking-wide mb-3">
                 Forms by Status
               </p>
               <StatusBreakdown byStatus={stats.forms_by_status} />
             </Card>
             <Card className="p-4">
-              <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3 flex items-center gap-2">
+              <p className="text-xs font-medium text-muted uppercase tracking-wide mb-3 flex items-center gap-2">
                 <Cpu size={14} strokeWidth={1.5} /> AI Provider
               </p>
               {extra?.ai ? (
@@ -107,10 +107,10 @@ export default function AdminDashboard() {
                   <p className="text-lg font-semibold text-charcoal capitalize">
                     {extra.ai.provider}
                   </p>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-muted">
                     {extra.ai.model || 'No model set'}
                   </p>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-muted">
                     {extra.ai.provider === 'ollama'
                       ? 'Local model'
                       : extra.ai.has_api_key
@@ -119,21 +119,21 @@ export default function AdminDashboard() {
                   </p>
                 </div>
               ) : (
-                <p className="text-sm text-gray-500">No active AI provider.</p>
+                <p className="text-sm text-muted">No active AI provider.</p>
               )}
             </Card>
           </div>
 
           {/* Users by role */}
           <Card className="p-4">
-            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">
+            <p className="text-xs font-medium text-muted uppercase tracking-wide mb-3">
               Users by Role
             </p>
             <div className="flex flex-wrap gap-3">
               {Object.entries(stats.users_by_role || {}).map(([role, count]) => (
                 <div
                   key={role}
-                  className="flex items-center gap-2 bg-white/40 border border-white/60 rounded-full pl-1 pr-3 py-1"
+                  className="flex items-center gap-2 bg-white/10 border border-white/15 rounded-full pl-1 pr-3 py-1"
                 >
                   <RoleBadge role={role} />
                   <span className="text-sm font-semibold text-charcoal">
@@ -147,7 +147,7 @@ export default function AdminDashboard() {
           {/* Recent activity + recent submissions */}
           <div className="grid gap-4 lg:grid-cols-2">
             <Card className="p-4">
-              <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3 flex items-center gap-2">
+              <p className="text-xs font-medium text-muted uppercase tracking-wide mb-3 flex items-center gap-2">
                 <Activity size={14} strokeWidth={1.5} /> Recent Activity
               </p>
               {extra?.recent_activity?.length ? (
@@ -155,7 +155,7 @@ export default function AdminDashboard() {
                   {extra.recent_activity.map((log) => (
                     <div key={log.id} className="text-sm">
                       <p className="text-charcoal">{log.description}</p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-muted">
                         {log.user_name || 'System'} ·{' '}
                         {formatDateTime(log.created_at)}
                       </p>
@@ -163,7 +163,7 @@ export default function AdminDashboard() {
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-gray-500">No activity yet.</p>
+                <p className="text-sm text-muted">No activity yet.</p>
               )}
               <button
                 onClick={() => navigate('/admin/audit-log')}
@@ -174,7 +174,7 @@ export default function AdminDashboard() {
             </Card>
 
             <Card className="p-4">
-              <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">
+              <p className="text-xs font-medium text-muted uppercase tracking-wide mb-3">
                 Recent Submissions
               </p>
               {summary.recent?.length ? (
@@ -186,7 +186,7 @@ export default function AdminDashboard() {
                     >
                       <span className="text-charcoal truncate">
                         {f.enterprise_name || (
-                          <span className="text-gray-400 italic">
+                          <span className="text-muted italic">
                             Untitled draft
                           </span>
                         )}
@@ -196,7 +196,7 @@ export default function AdminDashboard() {
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-gray-500">No forms yet.</p>
+                <p className="text-sm text-muted">No forms yet.</p>
               )}
             </Card>
           </div>

@@ -13,7 +13,7 @@ export default function ProtectedRoute({ children, roles }) {
   // Token exists but user not hydrated yet — let the bootstrap finish.
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-neutral text-sm text-gray-500">
+      <div className="min-h-screen flex items-center justify-center bg-neutral text-sm text-muted">
         Loading…
       </div>
     )

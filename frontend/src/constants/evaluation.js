@@ -33,8 +33,8 @@ export const EVALUATION_ACTIONS = [
     label: 'Not Compliant to DOST Guidelines',
     short: 'Not compliant',
     selected: 'bg-red-600 text-white border-red-600',
-    text: 'text-red-600',
-    border: 'border-red-300',
+    text: 'text-red-500',
+    border: 'border-red-500/40',
     hover: 'hover:bg-red-600 hover:text-white',
   },
 ]

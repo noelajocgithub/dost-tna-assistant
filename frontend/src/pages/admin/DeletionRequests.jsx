@@ -45,13 +45,13 @@ export default function DeletionRequests() {
 
       <Card>
         {loading ? (
-          <div className="p-6 text-sm text-gray-500">Loading…</div>
+          <div className="p-6 text-sm text-muted">Loading…</div>
         ) : rows.length === 0 ? (
           <div className="p-12 text-center">
             <Trash2
               size={40}
               strokeWidth={1.5}
-              className="mx-auto text-gray-400 mb-3"
+              className="mx-auto text-muted mb-3"
             />
             <p className="text-sm text-charcoal font-medium">
               No pending deletion requests.
@@ -60,7 +60,7 @@ export default function DeletionRequests() {
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-neutral text-left text-xs text-gray-500 uppercase">
+              <tr className="border-b border-neutral text-left text-xs text-muted uppercase">
                 <th className="px-4 py-3 font-medium">Enterprise</th>
                 <th className="px-4 py-3 font-medium">Status</th>
                 <th className="px-4 py-3 font-medium">Requested By</th>
@@ -74,17 +74,17 @@ export default function DeletionRequests() {
                 <tr key={r.id} className="border-b border-neutral hover:bg-neutral">
                   <td className="px-4 py-3 text-charcoal">
                     {r.enterprise_name || (
-                      <span className="text-gray-400 italic">Untitled</span>
+                      <span className="text-muted italic">Untitled</span>
                     )}
                   </td>
                   <td className="px-4 py-3">
                     <StatusBadge status={r.status} />
                   </td>
-                  <td className="px-4 py-3 text-gray-600">{r.requested_by}</td>
-                  <td className="px-4 py-3 text-gray-600 max-w-xs whitespace-pre-wrap">
+                  <td className="px-4 py-3 text-muted">{r.requested_by}</td>
+                  <td className="px-4 py-3 text-muted max-w-xs whitespace-pre-wrap">
                     {r.reason}
                   </td>
-                  <td className="px-4 py-3 text-gray-500">
+                  <td className="px-4 py-3 text-muted">
                     {formatDateTime(r.requested_at)}
                   </td>
                   <td className="px-4 py-3 text-right space-x-2 whitespace-nowrap">

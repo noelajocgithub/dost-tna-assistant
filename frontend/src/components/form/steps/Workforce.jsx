@@ -34,7 +34,7 @@ export default function Workforce({ value, onChange }) {
         <div className="border border-neutral overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-neutral text-left text-xs text-gray-500 uppercase bg-neutral">
+              <tr className="border-b border-neutral text-left text-xs text-muted uppercase bg-neutral">
                 <th className="px-2 py-2 font-medium">Category</th>
                 <th className="px-2 py-2 font-medium">Male</th>
                 <th className="px-2 py-2 font-medium">Female</th>

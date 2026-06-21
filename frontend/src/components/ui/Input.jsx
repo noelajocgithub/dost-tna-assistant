@@ -18,7 +18,7 @@ export const Input = forwardRef(function Input(
         </label>
       )}
       <input ref={ref} id={id} className={`${base} ${className}`} {...props} />
-      {error && <p className="text-xs text-red-600 mt-1">{error}</p>}
+      {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
     </div>
   )
 })
@@ -44,7 +44,7 @@ export const Textarea = forwardRef(function Textarea(
         className={`${base} resize-y ${className}`}
         {...props}
       />
-      {error && <p className="text-xs text-red-600 mt-1">{error}</p>}
+      {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
     </div>
   )
 })
@@ -66,7 +66,7 @@ export const Select = forwardRef(function Select(
       <select ref={ref} id={id} className={`${base} ${className}`} {...props}>
         {children}
       </select>
-      {error && <p className="text-xs text-red-600 mt-1">{error}</p>}
+      {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
     </div>
   )
 })

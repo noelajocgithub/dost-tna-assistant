@@ -286,11 +286,11 @@ export default function AIConfig() {
               {loadingModels ? (
                 <p className="text-xs text-cyan mt-1">Loading installed models…</p>
               ) : modelsError ? (
-                <p className="text-xs text-red-600 mt-1">
+                <p className="text-xs text-red-500 mt-1">
                   {modelsError} — enter a model name manually.
                 </p>
               ) : (
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-muted mt-1">
                   {ollamaModels.length} model(s) found on this server.
                 </p>
               )}
@@ -304,7 +304,7 @@ export default function AIConfig() {
           </Button>
           {testResult && (
             <span
-              className={`text-sm ${testResult.ok ? 'text-green' : 'text-red-600'}`}
+              className={`text-sm ${testResult.ok ? 'text-green' : 'text-red-500'}`}
             >
               {testResult.ok ? '✓ ' : '⚠ '}
               {testResult.message}

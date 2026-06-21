@@ -122,10 +122,10 @@ export default function DynamicTable({ label, name, value, onChange, columns }) 
           {label}
         </label>
       )}
-      <div className="border border-white/40 rounded-lg overflow-x-auto">
+      <div className="border border-white/10 rounded-lg overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-white/40 text-left text-xs text-gray-500 uppercase bg-white/30">
+            <tr className="border-b border-white/10 text-left text-xs text-muted uppercase bg-white/5">
               {columns.map((c) => (
                 <th key={c.key} className="px-2 py-2 font-medium">
                   {c.label}
@@ -139,7 +139,7 @@ export default function DynamicTable({ label, name, value, onChange, columns }) 
               <tr>
                 <td
                   colSpan={columns.length + 1}
-                  className="px-2 py-3 text-gray-400 text-xs italic"
+                  className="px-2 py-3 text-muted text-xs italic"
                 >
                   No rows yet.
                 </td>
@@ -161,7 +161,7 @@ export default function DynamicTable({ label, name, value, onChange, columns }) 
                     <button
                       type="button"
                       onClick={() => removeRow(idx)}
-                      className="text-red-600 border border-red-300 px-2 py-1 rounded-lg hover:bg-red-50"
+                      className="text-red-500 border border-red-500/40 px-2 py-1 rounded-lg hover:bg-red-500/10"
                       aria-label="Remove row"
                     >
                       <Trash2 size={14} strokeWidth={1.5} />
