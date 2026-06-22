@@ -47,15 +47,6 @@ cd frontend && npm run dev
 
 Open the printed Vite URL (http://localhost:5173).
 
-## Demo accounts (password: `password`)
-
-| Email | Role | Sees |
-|---|---|---|
-| `admin@dost.gov.ph` | Admin | User management, AI configuration |
-| `evaluator@dost.gov.ph` | Regional Evaluator | Evaluation queue, review/validate/return |
-| `staff@dost.gov.ph` | Provincial Staff | TNA wizard, own submissions |
-| `enterprise@dost.gov.ph` | Enterprise | TNA wizard, own submissions |
-
 ## Feature map (built in vertical slices)
 
 1. **Auth** — Sanctum tokens, role-based routing, flat login.
